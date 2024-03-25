@@ -1,7 +1,11 @@
 import { Input } from "../ui/input";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-const Search = () => {
+type SearchProps = {
+  placeHolder: string;
+};
+
+const Search = ({ placeHolder }: SearchProps) => {
   return (
     <div className="relative w-full w-max-[400px] p-4">
       <div
@@ -13,7 +17,7 @@ const Search = () => {
         <Input
           className="no-focus focus-visible:ring-transparent placeholder:text-alto border-gunsmoke rounded-full w-full shadow-none outline-none focus:outline-como pl-10"
           type="search"
-          placeholder="Search by Title or Author..."
+          placeholder={placeHolder}
         />
       </div>
     </div>

@@ -1,6 +1,8 @@
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,8 +21,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html className="bg-white" lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <ClerkProvider
+      appearance={{
+        elements: {
+          formButtonPrimary: "#558B78",
+          footerActionLink: "text-como",
+        },
+      }}
+    >
+      <html className="bg-white" lang="en">
+        <body className={inter.className}>{children}</body>
+        {/* <Toaster /> */}
+      </html>
+    </ClerkProvider>
   );
 }

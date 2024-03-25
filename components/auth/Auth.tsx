@@ -1,28 +1,31 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useState } from "react";
 import Login from "./login/Login";
 import Register from "./register/Register";
 
 const Auth = () => {
   const [tab, setTab] = useState<"signIn" | "signUp">("signIn");
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
+          onClick={() => setIsOpen(true)}
           variant="outline"
           className="outline-como hover:text-white hover:bg-como rounded-full"
         >
           Login
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md w-[360px] sm:w-[28rem]">
         <div className="flex items-center space-x-2">
-          <Tabs value={tab} className="w-[400px]">
+          <Tabs value={tab} className="w-[300px] sm:w-[25rem]">
             <TabsContent value="signIn">
-              <Login />
+              <Login closeModal={setIsOpen} />
               <div className="flex items-center w-full justify-center text-lg">
                 <p className="text-gunsmoke">No account?</p>
                 <Button
@@ -35,7 +38,7 @@ const Auth = () => {
               </div>
             </TabsContent>
             <TabsContent value="signUp">
-              <Register />
+              <Register closeModal={setIsOpen} />
               <div className="flex items-center w-full justify-center text-lg">
                 <p className="text-gunsmoke">Already have an account?</p>
                 <Button
