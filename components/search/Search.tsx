@@ -7,7 +7,7 @@ type SearchProps = {
 
 const Search = ({ placeHolder }: SearchProps) => {
   return (
-    <div className="relative w-full w-max-[400px] p-4">
+    <div className="relative z-10 w-full w-max-[400px] p-4">
       <div
         className="bg-white w-full
       relative flex min-h-[56px] grow items-center gap-1 

@@ -7,7 +7,7 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="flex h-20 border-b-[1px] border-gunsmoke text-como w-full fixed top-0 bg-white">
+    <nav className="flex  z-50 h-20 border-b-[1px] border-gunsmoke text-como w-full fixed top-0 bg-white">
       <div className="flex justify-between w-full px-52 py-5 items-center">
         <Link href="/">
           <div className="flex items-end">
