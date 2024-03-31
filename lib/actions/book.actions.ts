@@ -7,6 +7,7 @@ import { auth } from "@clerk/nextjs/server";
 import ListingBooks from "@/database/listing.model";
 import { GetBooksParams, GetListingBooksParams } from "./shared.types";
 import { FilterQuery } from "mongoose";
+import { revalidatePath } from "next/cache";
 
 export const addBookToDB = async (book: BookType, book_id: string | null) => {
   const { userId } = auth();
@@ -35,6 +36,7 @@ export const addBookToDB = async (book: BookType, book_id: string | null) => {
       price: book.price,
     });
     console.log(listingBook);
+    revalidatePath("/");
   } catch (error) {
     console.log(error);
   }
@@ -100,8 +102,9 @@ export const getListingBooks = async ({
       query.country = { $eq: filter.country };
     }
     if (filter?.price) {
-      query.price = { $gte: filter.price };
+      query.price = { $lte: filter.price };
     }
+    console.log(query);
     const listingBooks = await ListingBooks.find(query)
       .populate({ path: "book_id", model: BookCollections })
       .skip(skipAmount)

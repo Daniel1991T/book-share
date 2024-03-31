@@ -7,8 +7,8 @@ import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="flex  z-50 h-20 border-b-[1px] border-gunsmoke text-como w-full fixed top-0 bg-white">
-      <div className="flex justify-between w-full px-52 py-5 items-center">
+    <nav className="flex z-50 h-20 px-1 border-b-[1px] items-center justify-center border-gunsmoke text-como w-full  fixed top-0 bg-white">
+      <div className="flex justify-between w-full max-w-2xl py-5 items-center">
         <Link href="/">
           <div className="flex items-end">
             <p className="text-como flex text-4xl">B</p>
@@ -16,7 +16,7 @@ const Navbar = () => {
             <p className="text-como flex text-4xl ">kShare</p>
           </div>
         </Link>
-        <div className="flex items-center gap-4 max-w-[600px] flex-1">
+        <div className=" hidden md:block items-center gap-4 max-w-[600px] flex-1">
           <Search placeHolder="Search by Title or Author..." />
         </div>
         <div className="flex gap-4">
@@ -30,8 +30,8 @@ const Navbar = () => {
               </Button>
             </SignOutButton>
             <Link href="/add-book">
-              <Button className="bg-como hover:bg-timber_green rounded-full w-40 font-semibold">
-                + Place an ad
+              <Button className="bg-como hover:bg-timber_green gap-2 rounded-full md:w-40 font-semibold">
+                + <span className="hidden md:inline-block">Place an ad</span>
               </Button>
             </Link>
           </SignedIn>

@@ -12,11 +12,11 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
       price: searchParams.price ? parseInt(searchParams.price) : undefined,
     },
   });
-  console.log(listingBooks);
+  console.log(listingBooks, searchParams);
 
   return (
-    <section className="flex pt-3 flex-wrap mt-20 container mx-auto">
-      <div className="flex flex-wrap mx-auto max-w-2xl">
+    <section className="flex pt-3 mt-20 container mx-auto">
+      <div className="flex flex-wrap w-full gap-2 mx-auto max-w-2xl justify-start">
         {listingBooks.listingBooks.map((book) => (
           <BookCard
             key={book._id}
