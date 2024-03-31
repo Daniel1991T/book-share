@@ -1,7 +1,6 @@
 "use client";
 import AddBookInputField from "@/components/form/AddBookInputField";
 import ImageUploaderInputField from "@/components/image-upload/ImageUpload";
-import Search from "@/components/search/Search";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -24,43 +23,87 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
-import { addBookToDB } from "@/lib/actions/book.actions";
+import { addBookToDB, getBookById } from "@/lib/actions/book.actions";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
+import SearchBook from "@/components/search/SearchBook";
+import { useRouter, useSearchParams } from "next/navigation";
+import { removeKeysFromQuery } from "@/lib/utils";
 
 const AddBook = () => {
-  const [imageURLs, setImageURLs] = useState<[string, string, string]>([
-    "",
-    "",
-    "",
-  ]);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
   const form = useForm<z.infer<typeof BookSchema>>({
     resolver: zodResolver(BookSchema),
     defaultValues: {
       isGenerate: false,
-      title: "T-rex",
-      author: "Dan",
+      title: "",
+      author: "",
       condition: ConditionBook.NEW,
-      description: "dsasd",
+      description: "",
       gender: GenderBook.NONFICTION,
       isFree: BookPrice.FREE,
-      language: "Eng",
-      price: "20",
-      print_length: "525",
-      publication_year: "2025",
-      publisher: "Art",
+      language: "",
+      price: "",
+      print_length: "",
+      publication_year: "",
+      publisher: "",
       cover_url: ["", "", ""],
     },
   });
+  const [imageURLs, setImageURLs] = useState<[string, string, string]>([
+    form.getValues().cover_url[0] || "",
+    form.getValues().cover_url[1] || "",
+    form.getValues().cover_url[2] || "",
+  ]);
 
   useEffect(() => {
     form.setValue("cover_url", [...imageURLs]);
   }, [imageURLs, form]);
+
+  const bookIdSearchParams = searchParams.get("book_id");
+
+  useEffect(() => {
+    console.log("book_id ->>", bookIdSearchParams);
+
+    const fetchBook = async () => {
+      try {
+        const { book } = await getBookById(bookIdSearchParams!);
+        if (book) {
+          console.log("book ->>", book);
+          form.setValue("isGenerate", true);
+          form.setValue("title", book.title);
+          form.setValue("author", book.author);
+          form.setValue("cover_url", [...book.cover_url]);
+          setImageURLs([...book.cover_url]);
+          form.setValue("publisher", book.publisher);
+          form.setValue("description", book.description);
+          form.setValue("gender", book.gender);
+          form.setValue("language", book.language);
+          form.setValue("print_length", book.print_length);
+          form.setValue("publication_year", book.publication_year);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (bookIdSearchParams) {
+      fetchBook();
+    }
+  }, [bookIdSearchParams, form]);
+
   const onSubmit = async (values: z.infer<typeof BookSchema>) => {
     //
     console.log(values);
     try {
-      await addBookToDB(values, "");
+      await addBookToDB(values, bookIdSearchParams);
+      const removedUrl = removeKeysFromQuery({
+        params: searchParams.toString(),
+        keyToRemove: ["book_id"],
+      });
+      router.push(removedUrl, { scroll: false });
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -76,11 +119,10 @@ const AddBook = () => {
         You can add description and details manually, if you don&apos;t find
         your book in base.
       </p>
-      <Search placeHolder="Search book in base" />
+      <SearchBook />
 
       <Separator />
       <h1 className="text-2xl font-semibold my-4">Book cover</h1>
-      {JSON.stringify(form.getValues())}
 
       <ImageUploaderInputField
         imageURLs={imageURLs}
