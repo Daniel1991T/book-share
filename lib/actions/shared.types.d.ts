@@ -8,3 +8,10 @@ export type CreateUserParams = {
   country: string;
   phone: string;
 };
+
+export type GetBooksParams = {
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+  filter?: string;
+};

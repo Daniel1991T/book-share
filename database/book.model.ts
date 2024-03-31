@@ -1,7 +1,10 @@
 import { BookType } from "@/lib/validations";
 import { Document, Schema, model, models } from "mongoose";
 
-export type TBook = Omit<BookType, "condition" | "isFree" | "price"> & {
+export type TBook = Omit<
+  BookType,
+  "condition" | "isFree" | "price" | "isGenerate"
+> & {
   createdAt: Date;
 } & Document;
 
