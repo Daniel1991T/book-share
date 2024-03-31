@@ -8,3 +8,7 @@ export type RemoveUrlQueryParams = {
   params: string;
   keyToRemove: string[];
 };
+
+export interface SearchParamsProps {
+  searchParams: { [key: string]: string | undefined };
+}

@@ -51,7 +51,7 @@ export enum BookPrice {
 export const BookSchema = z.object({
   isGenerate: z.boolean().default(false),
   title: z.string().min(1).max(255),
-  description: z.string().min(1).max(255),
+  description: z.string().min(255),
   author: z.string().min(3).max(255),
   gender: z.enum([
     GenderBook.CHILDREN,

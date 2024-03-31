@@ -5,7 +5,7 @@ import { BookType } from "../validations";
 import { v2 as cloudinary } from "cloudinary";
 import { auth } from "@clerk/nextjs/server";
 import ListingBooks from "@/database/listing.model";
-import { GetBooksParams } from "./shared.types";
+import { GetBooksParams, GetListingBooksParams } from "./shared.types";
 import { FilterQuery } from "mongoose";
 
 export const addBookToDB = async (book: BookType, book_id: string | null) => {
@@ -74,6 +74,42 @@ export const getBookById = async (
   } catch (error: any) {
     console.error(`Failed to get book by id: ${error.message}`);
     throw new Error(`Failed to get book by id: ${error.message}`);
+  }
+};
+
+export const getListingBooks = async ({
+  filter,
+  page = 1,
+  pageSize = 25,
+  searchQuery,
+}: GetListingBooksParams) => {
+  try {
+    connectToDB();
+    const query: FilterQuery<typeof ListingBooks> = {};
+    const skipAmount = (page - 1) * pageSize;
+    if (searchQuery) {
+      query.$or = [{ title: { $regex: new RegExp(searchQuery, "i") } }];
+    }
+    if (filter?.gender) {
+      query.gender = { $eq: filter.gender };
+    }
+    if (filter?.city) {
+      query.city = { $eq: filter.city };
+    }
+    if (filter?.country) {
+      query.country = { $eq: filter.country };
+    }
+    if (filter?.price) {
+      query.price = { $gte: filter.price };
+    }
+    const listingBooks = await ListingBooks.find(query)
+      .populate({ path: "book_id", model: BookCollections })
+      .skip(skipAmount)
+      .limit(pageSize);
+    return { listingBooks };
+  } catch (error: any) {
+    console.error(`Failed to get listing books: ${error.message}`);
+    throw new Error(`Failed to get listing books: ${error.message}`);
   }
 };
 

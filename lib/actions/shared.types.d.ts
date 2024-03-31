@@ -15,3 +15,17 @@ export type GetBooksParams = {
   searchQuery?: string;
   filter?: string;
 };
+
+type FilterBooksParams = {
+  gender?: string;
+  city?: string;
+  country?: string;
+  price?: number;
+};
+
+export type GetListingBooksParams = {
+  page?: number;
+  pageSize?: number;
+  searchQuery?: string;
+  filter?: FilterBooksParams;
+};
