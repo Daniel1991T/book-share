@@ -118,6 +118,15 @@ export const getListingBooks = async ({
       { $unwind: "$book_details" },
       // Limitează numărul de documente returnate
       { $match: matchConditions },
+      {
+        $lookup: {
+          from: "users",
+          localField: "clerk_id",
+          foreignField: "clerkId",
+          as: "user",
+        },
+      },
+      { $unwind: "$user" },
       { $skip: skip }, // Sari peste documentele anterioare paginii curente
       { $limit: pageSize },
       {
@@ -125,13 +134,13 @@ export const getListingBooks = async ({
           // Proiectează câmpurile dorite
           _id: 1,
           book_id: 1,
-          user_id: 1,
+          clerk_id: 1,
           condition: 1,
           price: 1,
           for_trade: 1,
           listed_at: 1,
-          country: 1,
-          city: 1,
+          country: "$user.country",
+          city: "$user.city",
           book: {
             title: "$book_details.title",
             author: "$book_details.author",
@@ -141,6 +150,7 @@ export const getListingBooks = async ({
         },
       },
     ]);
+    console.log(listings);
 
     return listings;
   } catch (error: any) {
