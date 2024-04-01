@@ -110,7 +110,7 @@ const AddBook = () => {
   };
 
   return (
-    <div className="container mt-20 py-2 items-center justify-center px-32 md:px-52">
+    <div className="container mt-20 py-2 items-center justify-center max-w-2xl">
       <h1 className="text-2xl font-semibold">Place an ad</h1>
       <p className="text-gunsmoke">
         Find your book in base to add description and details.
@@ -183,6 +183,8 @@ const AddBook = () => {
                       field.onChange(value);
                     }}
                     type="single"
+                    className="flex flex-wrap justify-start"
+                    {...field}
                   >
                     {Object.values(GenderBook).map((value, index) => {
                       return (
@@ -244,6 +246,7 @@ const AddBook = () => {
                       field.onChange(value);
                     }}
                     type="single"
+                    className="flex justify-start"
                     {...field}
                   >
                     <ToggleGroupItem
@@ -279,6 +282,7 @@ const AddBook = () => {
                       field.onChange(value);
                     }}
                     type="single"
+                    className="flex justify-start"
                     {...field}
                   >
                     <ToggleGroupItem

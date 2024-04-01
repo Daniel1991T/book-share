@@ -87,29 +87,62 @@ export const getListingBooks = async ({
 }: GetListingBooksParams) => {
   try {
     connectToDB();
-    const query: FilterQuery<typeof ListingBooks> = {};
-    const skipAmount = (page - 1) * pageSize;
+    const matchConditions: any = {};
     if (searchQuery) {
-      query.$or = [{ title: { $regex: new RegExp(searchQuery, "i") } }];
+      matchConditions["book_details.title"] = new RegExp(searchQuery, "i");
     }
     if (filter?.gender) {
-      query.gender = { $eq: filter.gender };
-    }
-    if (filter?.city) {
-      query.city = { $eq: filter.city };
+      matchConditions["book_details.gender"] = filter.gender;
     }
     if (filter?.country) {
-      query.country = { $eq: filter.country };
+      matchConditions["country"] = filter.country;
+    }
+    if (filter?.city) {
+      matchConditions["city"] = filter.city;
     }
     if (filter?.price) {
-      query.price = { $lte: filter.price };
+      matchConditions["price"] = { $lte: filter.price };
     }
-    console.log(query);
-    const listingBooks = await ListingBooks.find(query)
-      .populate({ path: "book_id", model: BookCollections })
-      .skip(skipAmount)
-      .limit(pageSize);
-    return { listingBooks };
+
+    const skip = (page - 1) * pageSize;
+
+    const listings = await ListingBooks.aggregate([
+      {
+        $lookup: {
+          from: "bookscollections",
+          localField: "book_id",
+          foreignField: "_id",
+          as: "book_details",
+        },
+      },
+      { $unwind: "$book_details" },
+      // Limitează numărul de documente returnate
+      { $match: matchConditions },
+      { $skip: skip }, // Sari peste documentele anterioare paginii curente
+      { $limit: pageSize },
+      {
+        $project: {
+          // Proiectează câmpurile dorite
+          _id: 1,
+          book_id: 1,
+          user_id: 1,
+          condition: 1,
+          price: 1,
+          for_trade: 1,
+          listed_at: 1,
+          country: 1,
+          city: 1,
+          book: {
+            title: "$book_details.title",
+            author: "$book_details.author",
+            gender: "$book_details.gender",
+            cover_url: "$book_details.cover_url",
+          },
+        },
+      },
+    ]);
+
+    return listings;
   } catch (error: any) {
     console.error(`Failed to get listing books: ${error.message}`);
     throw new Error(`Failed to get listing books: ${error.message}`);
