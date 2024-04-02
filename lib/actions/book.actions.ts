@@ -8,6 +8,7 @@ import ListingBooks from "@/database/listing.model";
 import { GetBooksParams, GetListingBooksParams } from "./shared.types";
 import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
+import { GENDER_BOOK_FILTER } from "@/constants/filter";
 
 export const addBookToDB = async (book: BookType, book_id: string | null) => {
   const { userId } = auth();
@@ -91,7 +92,7 @@ export const getListingBooks = async ({
     if (searchQuery) {
       matchConditions["book_details.title"] = new RegExp(searchQuery, "i");
     }
-    if (filter?.gender) {
+    if (filter?.gender && filter?.gender !== GENDER_BOOK_FILTER.RECENT_ADDED) {
       matchConditions["book_details.gender"] = filter.gender;
     }
     if (filter?.country) {
@@ -129,6 +130,13 @@ export const getListingBooks = async ({
       { $unwind: "$user" },
       { $skip: skip }, // Sari peste documentele anterioare paginii curente
       { $limit: pageSize },
+      // Sortează în ordine descrescătoare după data listării
+      {
+        $sort: {
+          listed_at:
+            filter?.gender === GENDER_BOOK_FILTER.RECENT_ADDED ? -1 : 1,
+        },
+      },
       {
         $project: {
           // Proiectează câmpurile dorite

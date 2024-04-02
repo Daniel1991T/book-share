@@ -17,6 +17,7 @@ export type GetBooksParams = {
 };
 
 type FilterBooksParams = {
+  sort?: string;
   gender?: string;
   city?: string;
   country?: string;

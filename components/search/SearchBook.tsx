@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Input } from "../ui/input";
-import Image from "next/image";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import SearchResult from "./SearchResult";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
