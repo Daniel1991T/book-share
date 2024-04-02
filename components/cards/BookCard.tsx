@@ -17,7 +17,7 @@ type BookCardProps = {
 
 const BookCard = ({ author, image, location, price, title }: BookCardProps) => {
   return (
-    <Card className="w-32 h-72 px-0 text-sm overflow-hidden">
+    <Card className="w-40 h-80 px-0 text-sm overflow-hidden">
       <div className="h-4/6">
         <Image
           src={image}

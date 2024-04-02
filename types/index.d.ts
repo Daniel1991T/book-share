@@ -2,6 +2,7 @@ export type UrlQueryParams = {
   params: string;
   key: string;
   value: string | null;
+  keyToRemove?: string[];
 };
 
 export type RemoveUrlQueryParams = {

@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="bg-white relative">
+    <main className="bg-white relative max-h-screen">
       <Navbar />
       <section>{children}</section>
       <Toaster />

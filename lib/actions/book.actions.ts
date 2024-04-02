@@ -83,7 +83,7 @@ export const getBookById = async (
 export const getListingBooks = async ({
   filter,
   page = 1,
-  pageSize = 25,
+  pageSize = 10,
   searchQuery,
 }: GetListingBooksParams) => {
   try {
@@ -96,7 +96,7 @@ export const getListingBooks = async ({
       matchConditions["book_details.gender"] = filter.gender;
     }
     if (filter?.country) {
-      matchConditions["country"] = filter.country;
+      matchConditions["user.country"] = new RegExp(filter.country, "i");
     }
     if (filter?.city) {
       matchConditions["city"] = filter.city;
@@ -118,7 +118,6 @@ export const getListingBooks = async ({
       },
       { $unwind: "$book_details" },
       // Limitează numărul de documente returnate
-      { $match: matchConditions },
       {
         $lookup: {
           from: "users",
@@ -127,6 +126,7 @@ export const getListingBooks = async ({
           as: "user",
         },
       },
+      { $match: matchConditions },
       { $unwind: "$user" },
       { $skip: skip }, // Sari peste documentele anterioare paginii curente
       { $limit: pageSize },
@@ -158,14 +158,52 @@ export const getListingBooks = async ({
         },
       },
     ]);
-    console.log(listings);
-
-    return listings;
+    const { totalPages } = await calculateTotalPages(matchConditions, pageSize);
+    return { listings, hasNext: page < totalPages };
   } catch (error: any) {
     console.error(`Failed to get listing books: ${error.message}`);
     throw new Error(`Failed to get listing books: ${error.message}`);
   }
 };
+
+interface PaginationInfo {
+  totalListings: number;
+  totalPages: number;
+}
+
+async function calculateTotalPages(
+  matchConditions: any,
+  limit: number
+): Promise<PaginationInfo> {
+  const totalListingsResult = await ListingBooks.aggregate([
+    {
+      $lookup: {
+        from: "bookscollections",
+        localField: "book_id",
+        foreignField: "_id",
+        as: "book_details",
+      },
+    },
+    { $unwind: "$book_details" },
+    {
+      $lookup: {
+        from: "users",
+        localField: "clerk_id",
+        foreignField: "clerkId",
+        as: "user",
+      },
+    },
+    { $unwind: "$user" },
+    { $match: matchConditions }, // Utilizează matchConditions pentru a filtra listările
+    { $count: "total" },
+  ]);
+
+  const totalListings =
+    totalListingsResult.length > 0 ? totalListingsResult[0].total : 0;
+  const totalPages = Math.ceil(totalListings / limit);
+
+  return { totalListings, totalPages };
+}
 
 const uploadImageToCloudinary = async (cover_url: [string, string, string]) => {
   const uploadPromises = cover_url.map((value) => {

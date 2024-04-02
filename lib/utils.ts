@@ -22,9 +22,17 @@ export const convertBase64 = (file: Blob) => {
   });
 };
 
-export const formUrlQuery = ({ key, params, value }: UrlQueryParams) => {
+export const formUrlQuery = ({
+  key,
+  params,
+  value,
+  keyToRemove,
+}: UrlQueryParams) => {
   const currentUrl = qs.parse(params);
   currentUrl[key] = value;
+  keyToRemove?.forEach((key) => {
+    delete currentUrl[key];
+  });
   return qs.stringifyUrl(
     {
       url: window.location.pathname,
