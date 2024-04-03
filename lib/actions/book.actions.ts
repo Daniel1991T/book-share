@@ -28,9 +28,10 @@ export const addBookToDB = async (book: BookType, book_id: string | null) => {
         cover_url: urlsCover,
       });
     }
+    console.log(book_id);
 
     const listingBook = await ListingBooks.create({
-      book_id: bookResult._id ? bookResult._id : book_id,
+      book_id: bookResult?._id ? bookResult._id : book_id,
       clerk_id: userId,
       condition: book.condition,
       for_trade: book.isFree === "free" ? true : false,
@@ -38,8 +39,9 @@ export const addBookToDB = async (book: BookType, book_id: string | null) => {
     });
     console.log(listingBook);
     revalidatePath("/");
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
+    throw new Error(`Failed to add book to database: ${error.message}`);
   }
 };
 
