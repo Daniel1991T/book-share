@@ -9,6 +9,7 @@ import { GetBooksParams, GetListingBooksParams } from "./shared.types";
 import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { GENDER_BOOK_FILTER } from "@/constants/filter";
+import { ListingBooksType } from "@/types";
 
 export const addBookToDB = async (book: BookType, book_id: string | null) => {
   const { userId } = auth();

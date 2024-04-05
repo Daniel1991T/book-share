@@ -13,6 +13,7 @@ export type TUser = {
   country?: string;
   rating?: number;
   reputation: Schema.Types.ObjectId[];
+  wishlist: Schema.Types.ObjectId[];
   joinedAt: Date;
 } & Document;
 
@@ -29,6 +30,7 @@ const UserSchema = new Schema<TUser>({
   country: { type: String },
   rating: { type: Number, default: 0 },
   reputation: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+  wishlist: [{ type: Schema.Types.ObjectId, ref: "Listing" }],
   joinedAt: { type: Date, default: Date.now },
 });
 

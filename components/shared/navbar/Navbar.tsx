@@ -4,10 +4,14 @@ import { Button } from "@/components/ui/button";
 import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
 import { BookOpenIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import UserProfile from "../UserProfile";
 
 const Navbar = () => {
   return (
-    <nav className="flex z-50 h-16 px-1 border-b-[1px] items-center justify-center border-gunsmoke text-como w-full  fixed top-0 bg-white">
+    <nav
+      className="flex z-50 h-16 px-1 border-b-[1px] items-center justify-center
+     border-gunsmoke text-como w-full  fixed top-0 bg-white"
+    >
       <div className="flex justify-between w-full max-w-4xl items-center">
         <Link href="/">
           <div className="flex items-end">
@@ -21,19 +25,12 @@ const Navbar = () => {
         </div>
         <div className="flex gap-4">
           <SignedIn>
-            <SignOutButton>
-              <Button
-                variant="outline"
-                className="outline-como hover:text-white hover:bg-como rounded-full"
-              >
-                Log out
-              </Button>
-            </SignOutButton>
             <Link href="/add-book">
               <Button className="bg-como hover:bg-timber_green gap-2 rounded-full md:w-40 font-semibold">
                 + <span className="hidden md:inline-block">Place an ad</span>
               </Button>
             </Link>
+            <UserProfile />
           </SignedIn>
 
           <SignedOut>

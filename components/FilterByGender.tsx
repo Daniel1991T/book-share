@@ -53,7 +53,7 @@ const FilterByGender = () => {
           <ToggleGroupItem
             id={gender.id.toString()}
             key={index}
-            className="border-2 data-[state=on]:text-como w-10 h-10 data-[state=on]:border-como flex flex-col gap-1  items-center justify-center md:w-20 md:h-20 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-300 ease-in-out"
+            className="border-2 data-[state=on]:text-como w-20 h-10 data-[state=on]:border-como flex flex-col gap-1  items-center justify-center md:w-20 md:h-20 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors duration-300 ease-in-out"
             value={gender.value}
             aria-label={gender.value}
           >

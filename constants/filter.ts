@@ -99,4 +99,5 @@ export enum FILTER_URL_PARAMS {
   COUNTRY = "country",
   GENDER = "gender",
   PAGE = "page",
+  PROFILE = "profile",
 }
