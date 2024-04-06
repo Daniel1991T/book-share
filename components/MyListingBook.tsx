@@ -4,6 +4,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useInView } from "react-intersection-observer";
 import { getListingBookByClerkId } from "@/lib/actions/listing.actions";
 import Image from "next/image";
+import { log } from "console";
 
 const NUMBER_OF_LISTING_BOOKS_TO_FETCH = 5;
 
@@ -26,13 +27,13 @@ const MyListingBook = () => {
       setOffset((prev) => prev + 1);
       setIsNext(isNext);
     };
-    if (inView) {
+    if (inView && isNext) {
       loadNextListings();
     }
-  }, [inView, listingBooks, offset, userId]);
+  }, [inView, listingBooks, offset, userId, isNext]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
       {listingBooks}
       {isNext && (
         <div ref={ref} className="flex justify-center">

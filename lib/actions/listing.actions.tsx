@@ -8,7 +8,7 @@ import MyBookCard from "@/components/cards/MyBookCard";
 export const getListingBookByClerkId = async ({
   clerk_id,
   page = 1,
-  pageSize = 9,
+  pageSize = 10,
 }: {
   clerk_id: string;
   page?: number;
@@ -16,8 +16,6 @@ export const getListingBookByClerkId = async ({
 }) => {
   try {
     connectToDB();
-    console.log(clerk_id);
-
     const listings = (await ListingBooks.find({ clerk_id: clerk_id })
       .populate({
         path: "book_id",
@@ -29,11 +27,12 @@ export const getListingBookByClerkId = async ({
     const totalListingBooks = await ListingBooks.countDocuments({
       clerk_id: clerk_id,
     });
-    const isNext = totalListingBooks > page + listings.length;
+    const isNext = totalListingBooks > page * pageSize + listings.length;
+    console.log("isNext", isNext);
 
     return {
-      listings: listings.map((listing) => (
-        <MyBookCard listingBook={listing} key={listing._id} />
+      listings: listings.map((listing, index) => (
+        <MyBookCard index={index} listingBook={listing} key={listing._id} />
       )),
       isNext,
     };
