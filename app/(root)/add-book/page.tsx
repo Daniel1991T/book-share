@@ -175,10 +175,10 @@ const AddBook = () => {
             name="gender"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="gender">Gender</FormLabel>
+                <FormLabel htmlFor={field.name}>Gender</FormLabel>
                 <FormControl>
                   <ToggleGroup
-                    id="gender"
+                    id={field.name}
                     onValueChange={(value) => {
                       field.onChange(value);
                     }}
@@ -189,7 +189,7 @@ const AddBook = () => {
                     {Object.values(GenderBook).map((value, index) => {
                       return (
                         <ToggleGroupItem
-                          id={field.name}
+                          name="gender"
                           key={index}
                           className="border-2 data-[state=on]:border-como"
                           value={value}
@@ -286,7 +286,7 @@ const AddBook = () => {
                     {...field}
                   >
                     <ToggleGroupItem
-                      id="price"
+                      id="free"
                       className="border-2 w-40 data-[state=on]:bg-como data-[state=on]:text-white"
                       value={BookPrice.FREE}
                     >

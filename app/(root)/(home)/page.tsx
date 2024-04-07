@@ -2,20 +2,32 @@ import BookCard from "@/components/cards/BookCard";
 import FilterByCountry from "@/components/FilterByCountry";
 import FilterByGender from "@/components/FilterByGender";
 import Pagination from "@/components/Pagination";
+import { FILTER_URL_PARAMS, GENDER_BOOK_FILTER } from "@/constants/filter";
+import { TUser } from "@/database/user.model";
 import { getListingBooks } from "@/lib/actions/book.actions";
+import { getUserById } from "@/lib/actions/user.actions";
 import { SearchParamsProps } from "@/types";
+import { auth } from "@clerk/nextjs";
 
 const Home = async ({ searchParams }: SearchParamsProps) => {
+  const { userId: clerkId } = auth();
   const { listings, hasNext } = await getListingBooks({
     searchQuery: searchParams.q,
     filter: {
       city: searchParams.city,
       country: searchParams.country,
-      gender: searchParams.gender,
+      gender: searchParams?.gender
+        ? searchParams.gender
+        : GENDER_BOOK_FILTER.RECENT_ADDED,
       price: searchParams.price ? parseInt(searchParams.price) : undefined,
     },
     page: searchParams.page ? +searchParams.page : 1,
   });
+
+  let mongoUser: TUser;
+  if (clerkId) {
+    mongoUser = await getUserById(clerkId);
+  }
 
   return (
     <section
@@ -38,6 +50,9 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
         <div className="flex md:items-start justify-center flex-wrap w-full gap-2  md:justify-start">
           {listings.map((listingBook) => (
             <BookCard
+              isWishlist={mongoUser?.wishlist.includes(listingBook._id)}
+              userId={JSON.stringify(mongoUser?._id)}
+              listingBookId={JSON.stringify(listingBook._id)}
               key={listingBook._id}
               author={listingBook.book.author}
               title={listingBook.book.title}

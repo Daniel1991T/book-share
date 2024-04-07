@@ -56,13 +56,15 @@ const SearchBook = () => {
 
   return (
     <div className="relative w-full max-w-[600px]" ref={searchContainerRef}>
-      <div
+      <label
+        htmlFor="search-in-base"
         className="bg-white w-full
       relative flex min-h-[56px] grow items-center gap-1 
       rounded-lg px-4"
       >
         <MagnifyingGlassIcon className="h-5 w-5 text-gunsmoke absolute left-6" />
         <Input
+          id="search-in-base"
           type="text"
           placeholder="Search book in base"
           value={search}
@@ -73,7 +75,7 @@ const SearchBook = () => {
           }}
           className="no-focus focus-visible:ring-transparent placeholder:text-alto border-gunsmoke rounded-full w-full shadow-none outline-none focus:outline-como pl-10"
         />
-      </div>
+      </label>
       {isOpen ? <SearchResult setIsOpen={setIsOpen} /> : null}
     </div>
   );

@@ -30,3 +30,9 @@ export type GetListingBooksParams = {
   searchQuery?: string;
   filter?: FilterBooksParams;
 };
+
+export type ToggleAddWishlistParams = {
+  userId: string;
+  listingBookId: string;
+  path: string;
+};

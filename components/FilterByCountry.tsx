@@ -24,9 +24,7 @@ const FilterByCountry = ({ containerClasses, otherClasses }: FilterProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const paramFilter = searchParams.get(FILTER_URL_PARAMS.COUNTRY);
-  const [selectedCountry, setSelectedCountry] = useState(
-    paramFilter || "Select a Country"
-  );
+  const [selectedCountry, setSelectedCountry] = useState(paramFilter);
 
   const handleUpdateParams = (value: string) => {
     setSelectedCountry(value);
@@ -50,7 +48,10 @@ const FilterByCountry = ({ containerClasses, otherClasses }: FilterProps) => {
 
   return (
     <div className={`relative ${containerClasses}`}>
-      <Select onValueChange={handleUpdateParams} value={selectedCountry}>
+      <Select
+        onValueChange={handleUpdateParams}
+        value={selectedCountry ? selectedCountry : undefined}
+      >
         <SelectTrigger
           className={`${otherClasses} body-regular light-border 
         background-light800_dark300 text-dark500_light700 border px-5 py-2.5`}
