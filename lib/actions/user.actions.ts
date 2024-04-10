@@ -4,6 +4,8 @@ import User from "@/database/user.model";
 import { connectToDB } from "../mongodb";
 import { CreateUserParams, ToggleAddWishlistParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
+import { LISTING_BOOKS_MODEL_MONGODB } from "@/database/listing.model";
+import { BOOKS_COLLECTIONS_MODEL_MONGODB } from "@/database/book.model";
 
 export const createUser = async (userData: CreateUserParams) => {
   try {
@@ -40,6 +42,9 @@ export const toggleAddToWishlist = async ({
     if (!user) throw new Error("User not found!");
 
     const isBookInWishlist = user.wishlist.includes(listingBookId);
+    console.log("isBookInWishlist", isBookInWishlist);
+    console.log("listingBookId", listingBookId);
+
     if (isBookInWishlist) {
       // remove question from user saved question
       await User.findByIdAndUpdate(

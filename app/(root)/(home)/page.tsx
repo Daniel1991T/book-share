@@ -59,6 +59,7 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
               image={listingBook.book.cover_url[0]}
               location={`${listingBook.city}, ${listingBook.country}`}
               price={listingBook.price}
+              isMyListingBook={clerkId === listingBook.clerk_id}
             />
           ))}
         </div>

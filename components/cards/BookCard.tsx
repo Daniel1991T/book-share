@@ -17,6 +17,7 @@ type BookCardProps = {
   title: string;
   userId?: string;
   listingBookId?: string;
+  isMyListingBook: boolean;
 };
 
 const BookCard = ({
@@ -28,16 +29,20 @@ const BookCard = ({
   isWishlist,
   listingBookId,
   userId,
+  isMyListingBook,
 }: BookCardProps) => {
   return (
     <Card className="w-40 h-80 px-0 text-sm overflow-hidden">
       <div className="h-4/6 relative">
         <div className="absolute right-1 top-1 p-1 rounded-full flex items-center justify-center backdrop-blur-sm">
-          <AddToWishlist
-            isWishlist={isWishlist}
-            listingBookId={listingBookId}
-            userId={userId}
-          />
+          {!isMyListingBook && (
+            <AddToWishlist
+              key={listingBookId}
+              isWishlist={isWishlist}
+              listingBookId={listingBookId}
+              userId={userId}
+            />
+          )}
         </div>
         <Image
           src={image}

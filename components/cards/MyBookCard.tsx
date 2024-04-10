@@ -6,6 +6,7 @@ import { MotionDiv } from "../shared/MotionDiv";
 type MyBookCardProps = {
   listingBook: ListingBooksType;
   index: number;
+  isMyAdds?: boolean;
 };
 
 const variants = {

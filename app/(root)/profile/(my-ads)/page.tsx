@@ -1,4 +1,4 @@
-import MyListingBook from "@/components/MyListingBook";
+import ListingBook from "@/components/MyListingBook";
 import { getListingBookByClerkId } from "@/lib/actions/listing.actions";
 import { auth } from "@clerk/nextjs";
 import Image from "next/image";
@@ -29,7 +29,7 @@ const MyAds = async () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
             {listings}
           </div>
-          <MyListingBook />
+          <ListingBook listingBooksType="my-adds" />
         </div>
       </Suspense>
     </section>

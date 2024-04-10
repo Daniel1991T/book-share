@@ -23,5 +23,5 @@ const BookCollectionsSchema = new Schema<TBook>({
 
 const BookCollections =
   models.BooksCollections || model("BooksCollections", BookCollectionsSchema);
-
+export const BOOKS_COLLECTIONS_MODEL_MONGODB = "BooksCollections";
 export default BookCollections;

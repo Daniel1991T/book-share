@@ -2,15 +2,21 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useInView } from "react-intersection-observer";
-import { getListingBookByClerkId } from "@/lib/actions/listing.actions";
+import {
+  getListingBookByClerkId,
+  getUserWishlist,
+} from "@/lib/actions/listing.actions";
 import Image from "next/image";
-import { log } from "console";
 
 const NUMBER_OF_LISTING_BOOKS_TO_FETCH = 5;
 
 export type ListingBooksJSX = JSX.Element;
 
-const MyListingBook = () => {
+type ListingBookProps = {
+  listingBooksType: "wishlist" | "my-adds";
+};
+
+const ListingBook = ({ listingBooksType }: ListingBookProps) => {
   const { userId } = useAuth();
   const [offset, setOffset] = useState(2);
   const [listingBooks, setListingBooks] = useState<ListingBooksJSX[]>([]);
@@ -27,10 +33,25 @@ const MyListingBook = () => {
       setOffset((prev) => prev + 1);
       setIsNext(isNext);
     };
+    const loadNextWishlist = async () => {
+      console.log(userId);
+      const { wishlist, hasNext: isNext } = await getUserWishlist({
+        clerk_id: userId!,
+        page: offset,
+      });
+      setListingBooks([...listingBooks, ...wishlist]);
+      setOffset((prev) => prev + 1);
+      setIsNext(isNext);
+    };
+
     if (inView && isNext) {
-      loadNextListings();
+      if (listingBooksType === "wishlist") {
+        loadNextWishlist();
+      } else {
+        loadNextListings();
+      }
     }
-  }, [inView, listingBooks, offset, userId, isNext]);
+  }, [inView, listingBooks, offset, userId, isNext, listingBooksType]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
@@ -49,4 +70,4 @@ const MyListingBook = () => {
     </div>
   );
 };
-export default MyListingBook;
+export default ListingBook;

@@ -26,5 +26,6 @@ const listingBookSchema = new Schema<TListingBook>({
 });
 
 const ListingBooks = models.Listing || model("Listing", listingBookSchema);
+export const LISTING_BOOKS_MODEL_MONGODB = "Listing";
 
 export default ListingBooks;

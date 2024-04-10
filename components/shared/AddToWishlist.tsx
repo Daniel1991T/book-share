@@ -20,6 +20,8 @@ const AddToWishlist = ({
   const pathname = usePathname();
 
   const handleSave = async () => {
+    console.log("listingBookId", listingBookId);
+
     await toggleAddToWishlist({
       userId: JSON.parse(userId!),
       listingBookId: JSON.parse(listingBookId!),
@@ -45,6 +47,7 @@ const AddToWishlist = ({
         onChange={handleSave}
       />
       <div
+        id={listingBookId}
         className={`top-0 left-0 size-5 transition-all duration-100 ${
           isChecked ? "animate-like-effect" : "animate-dislike-effect"
         }`}

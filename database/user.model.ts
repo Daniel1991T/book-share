@@ -20,7 +20,7 @@ export type TUser = {
 const UserSchema = new Schema<TUser>({
   clerkId: { type: String, required: true },
   name: { type: String, required: true },
-  surname: { type: String, required: true, unique: true },
+  surname: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String },
   bio: { type: String },
@@ -35,5 +35,6 @@ const UserSchema = new Schema<TUser>({
 });
 
 const User = models.User || model("User", UserSchema);
+export const USER_MODEL_MONGODB = "User";
 
 export default User;
