@@ -6,11 +6,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SignOutButton } from "@clerk/nextjs";
+import { SignOutButton, UserButton } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 import { LogOut, Pencil, User } from "lucide-react";
 import { profileLinks } from "@/constants";
 import Link from "next/link";
+import UserResume from "./UserResume";
 
 function UserProfile() {
   return (
@@ -19,7 +20,9 @@ function UserProfile() {
         <User />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          <UserResume />
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
         {profileLinks.map((link) => (
           <Link href={link.route} key={link.label}>
@@ -30,10 +33,12 @@ function UserProfile() {
           </Link>
         ))}
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="text-sm gap-2 font-light">
-          <Pencil strokeWidth={1} />
-          <p>Edit Profile</p>
-        </DropdownMenuItem>
+        <Link href="/edit-profile">
+          <DropdownMenuItem className="text-sm gap-2 font-light">
+            <Pencil strokeWidth={1} />
+            <p>Edit Profile</p>
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuItem>
           <SignOutButton>
             <div className="text-sm gap-2 font-light flex">

@@ -6,6 +6,12 @@ import { CreateUserParams, ToggleAddWishlistParams } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import { LISTING_BOOKS_MODEL_MONGODB } from "@/database/listing.model";
 import { BOOKS_COLLECTIONS_MODEL_MONGODB } from "@/database/book.model";
+import { auth, clerkClient, getAuth } from "@clerk/nextjs/server";
+import { redirect } from "next/dist/server/api-utils";
+import { redirectToSignIn } from "@clerk/nextjs";
+import path from "path";
+import { log } from "console";
+import { convertBase64 } from "../utils";
 
 export const createUser = async (userData: CreateUserParams) => {
   try {
@@ -63,6 +69,28 @@ export const toggleAddToWishlist = async ({
     revalidatePath(path);
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+};
+
+export const updateImageProfile = async (
+  image: File,
+  clerkId: string,
+  path: string
+) => {
+  console.log("updateImageProfile", clerkId, path);
+  try {
+    const imageBase64 = await convertBase64(image);
+    const updatedImage = await clerkClient.users
+      .updateUserProfileImage(clerkId, { file: imageBase64 as File })
+      .catch((error) => {
+        console.log(error);
+      });
+    console.log(updatedImage);
+    revalidatePath(path);
+    revalidatePath("/");
+  } catch (error) {
+    console.log("update Image error", error);
     throw error;
   }
 };

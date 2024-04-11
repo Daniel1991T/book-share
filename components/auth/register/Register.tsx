@@ -66,6 +66,9 @@ const Register = ({ closeModal }: RegisterProps) => {
       await signUp.create({
         emailAddress: values.email,
         password: values.password,
+        firstName: values.name,
+        lastName: values.surname,
+        phoneNumber: values.phone,
       });
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setIsVerifying(true);
