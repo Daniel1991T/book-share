@@ -20,7 +20,9 @@ export const getListingBookByClerkId = async ({
 }) => {
   try {
     connectToDB();
-    const listings = (await ListingBooks.find({ clerkId: clerk_id })
+    console.log("clerk_id", JSON.stringify(clerk_id));
+
+    const listings = (await ListingBooks.find({ clerk_id: clerk_id })
       .populate({
         path: "book_id",
         model: "BooksCollections",
