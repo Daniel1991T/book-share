@@ -34,6 +34,8 @@ const AddToWishlist = ({
     });
   };
 
+  if (!userId) return null;
+
   return (
     <label
       htmlFor={listingBookId}

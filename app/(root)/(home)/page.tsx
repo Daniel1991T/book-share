@@ -5,7 +5,7 @@ import Pagination from "@/components/Pagination";
 import { FILTER_URL_PARAMS, GENDER_BOOK_FILTER } from "@/constants/filter";
 import { TUser } from "@/database/user.model";
 import { getListingBooks } from "@/lib/actions/book.actions";
-import { getUserById } from "@/lib/actions/user.actions";
+import { getUserByClerkId } from "@/lib/actions/user.actions";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs";
 
@@ -26,7 +26,8 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
 
   let mongoUser: TUser;
   if (clerkId) {
-    mongoUser = await getUserById(clerkId);
+    mongoUser = await getUserByClerkId(clerkId);
+    console.log("mongoUser", mongoUser, clerkId);
   }
 
   return (

@@ -18,10 +18,10 @@ export const createUser = async (userData: CreateUserParams) => {
   }
 };
 
-export const getUserById = async (userId: string) => {
+export const getUserByClerkId = async (userId: string) => {
   try {
     connectToDB();
-    const user = await User.findOne({ clerk_id: userId });
+    const user = await User.findOne({ clerkId: userId });
     console.log(user);
 
     return user;
