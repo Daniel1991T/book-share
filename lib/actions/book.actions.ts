@@ -1,7 +1,7 @@
 "use server";
 import BookCollections, { TBook } from "@/database/book.model";
 import { connectToDB } from "../mongodb";
-import { BookType } from "../validations";
+import { BookType, GenderBook } from "../validations";
 import { v2 as cloudinary } from "cloudinary";
 import { auth } from "@clerk/nextjs/server";
 import ListingBooks from "@/database/listing.model";
@@ -119,6 +119,12 @@ export const getListingBooks = async ({
           as: "book_details",
         },
       },
+      {
+        $sort: {
+          listed_at:
+            filter?.gender === GENDER_BOOK_FILTER.RECENT_ADDED ? -1 : 1,
+        },
+      },
       { $unwind: "$book_details" },
       // Limitează numărul de documente returnate
       {
@@ -134,12 +140,7 @@ export const getListingBooks = async ({
       { $skip: skip }, // Sari peste documentele anterioare paginii curente
       { $limit: pageSize },
       // Sortează în ordine descrescătoare după data listării
-      {
-        $sort: {
-          listed_at:
-            filter?.gender === GENDER_BOOK_FILTER.RECENT_ADDED ? -1 : 1,
-        },
-      },
+
       {
         $project: {
           // Proiectează câmpurile dorite

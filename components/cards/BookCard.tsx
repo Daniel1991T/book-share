@@ -55,9 +55,9 @@ const BookCard = ({
       <CardContent className="p-0 pb-1 space-y-1 overflow-hidden text-ellipsis ">
         <CardTitle className="text-sm line-clamp-1">{title}</CardTitle>
         <CardDescription className="line-clamp-1">{author}</CardDescription>
-        <p className="flex items-center gap-2 text-como font-bold line-clamp-1">
+        <p className="flex items-center gap-2 text-como font-bold">
           <MapPin className="text-como" />
-          {location}
+          <span className="line-clamp-1 text-ellipsis">{location}</span>
         </p>
         <p>{price ? `$${price}` : "Free"}</p>
       </CardContent>
