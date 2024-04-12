@@ -10,13 +10,15 @@ import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { GENDER_BOOK_FILTER } from "@/constants/filter";
 import { ListingBooksType } from "@/types";
+import { env } from "@/env";
 
 export const addBookToDB = async (book: BookType, book_id: string | null) => {
   const { userId } = auth();
+
   cloudinary.config({
-    cloud_name: "dunmfhbir",
-    api_key: "312551626269952",
-    api_secret: "lpFoq7kjaIJUoQeFbzWCzq04ADQ",
+    cloud_name: env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+    api_key: env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+    api_secret: env.CLOUDINARY_API_SECRET,
   });
 
   try {
