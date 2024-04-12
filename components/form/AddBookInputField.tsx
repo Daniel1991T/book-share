@@ -61,6 +61,7 @@ const AddBookInputField: React.FC<AddBookFieldProps> = ({
               type={typeInput}
               className="rounded-full"
               placeholder={placeholder}
+              disabled={form.getValues("isGenerate")}
               {...field}
             />
           </FormControl>

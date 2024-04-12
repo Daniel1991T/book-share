@@ -151,6 +151,7 @@ const AddBook = () => {
                 <FormLabel htmlFor="description">Description</FormLabel>
                 <FormControl>
                   <Textarea
+                    disabled={form.getValues("isGenerate")}
                     {...field}
                     id="description"
                     placeholder="Description"
@@ -178,6 +179,7 @@ const AddBook = () => {
                 <FormLabel htmlFor={field.name}>Gender</FormLabel>
                 <FormControl>
                   <ToggleGroup
+                    disabled={form.getValues("isGenerate")}
                     id={field.name}
                     onValueChange={(value) => {
                       field.onChange(value);
@@ -246,6 +248,7 @@ const AddBook = () => {
                       field.onChange(value);
                     }}
                     type="single"
+                    disabled={form.getValues("isGenerate")}
                     className="flex justify-start"
                     {...field}
                   >
