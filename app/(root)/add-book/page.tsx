@@ -29,10 +29,13 @@ import { useEffect, useState } from "react";
 import SearchBook from "@/components/search/SearchBook";
 import { useRouter, useSearchParams } from "next/navigation";
 import { removeKeysFromQuery } from "@/lib/utils";
+import { set } from "mongoose";
+import Image from "next/image";
 
 const AddBook = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof BookSchema>>({
     resolver: zodResolver(BookSchema),
@@ -95,7 +98,7 @@ const AddBook = () => {
 
   const onSubmit = async (values: z.infer<typeof BookSchema>) => {
     //
-    console.log(values);
+    setIsLoading(true);
     try {
       await addBookToDB(values, bookIdSearchParams);
       const removedUrl = removeKeysFromQuery({
@@ -106,6 +109,8 @@ const AddBook = () => {
       router.push("/");
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -191,6 +196,7 @@ const AddBook = () => {
                     {Object.values(GenderBook).map((value, index) => {
                       return (
                         <ToggleGroupItem
+                          id={`${field.name}-${value}`}
                           name="gender"
                           key={index}
                           className="border-2 data-[state=on]:border-como"
@@ -332,10 +338,23 @@ const AddBook = () => {
           />
 
           <Button
+            disabled={isLoading}
             className="w-full bg-como hover:bg-como/90 rounded-full"
             type="submit"
           >
-            Submit
+            {!isLoading ? (
+              [<span key="1">Submit</span>]
+            ) : (
+              <div className="flex justify-center">
+                <Image
+                  src="../assets/icons/spinner.svg"
+                  alt="spinner"
+                  width={40}
+                  height={40}
+                  className="object-contain stroke-slate-50 fill-slate-50"
+                />
+              </div>
+            )}
           </Button>
         </form>
       </Form>

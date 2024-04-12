@@ -49,7 +49,7 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
       px-3 col-span-4 row-span-4 col-start-2 row-start-2"
       >
         <div className="flex md:items-start justify-center flex-wrap w-full gap-2  md:justify-start">
-          {listings.map((listingBook) => (
+          {listings.map((listingBook, index) => (
             <BookCard
               isWishlist={mongoUser?.wishlist.includes(listingBook._id)}
               userId={JSON.stringify(mongoUser?._id)}
@@ -61,6 +61,7 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
               location={`${listingBook.city}, ${listingBook.country}`}
               price={listingBook.price}
               isMyListingBook={clerkId === listingBook.clerk_id}
+              index={index}
             />
           ))}
         </div>

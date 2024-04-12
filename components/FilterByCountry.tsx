@@ -24,7 +24,9 @@ const FilterByCountry = ({ containerClasses, otherClasses }: FilterProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const paramFilter = searchParams.get(FILTER_URL_PARAMS.COUNTRY);
-  const [selectedCountry, setSelectedCountry] = useState(paramFilter);
+  const [selectedCountry, setSelectedCountry] = useState(
+    paramFilter || undefined
+  );
 
   const handleUpdateParams = (value: string) => {
     setSelectedCountry(value);
@@ -38,7 +40,7 @@ const FilterByCountry = ({ containerClasses, otherClasses }: FilterProps) => {
   };
 
   const handleClearFilter = () => {
-    setSelectedCountry(""); // Resetează selectarea
+    setSelectedCountry(undefined); // Resetează selectarea
     const newUrl = removeKeysFromQuery({
       params: searchParams.toString(),
       keyToRemove: [FILTER_URL_PARAMS.COUNTRY, FILTER_URL_PARAMS.PAGE],
