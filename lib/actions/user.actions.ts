@@ -2,15 +2,13 @@
 
 import User from "@/database/user.model";
 import { connectToDB } from "../mongodb";
-import { CreateUserParams, ToggleAddWishlistParams } from "./shared.types";
+import {
+  CreateUserParams,
+  ToggleAddWishlistParams,
+  UpdateUserParams,
+} from "./shared.types";
 import { revalidatePath } from "next/cache";
-import { LISTING_BOOKS_MODEL_MONGODB } from "@/database/listing.model";
-import { BOOKS_COLLECTIONS_MODEL_MONGODB } from "@/database/book.model";
-import { auth, clerkClient, getAuth } from "@clerk/nextjs/server";
-import { redirect } from "next/dist/server/api-utils";
-import { redirectToSignIn } from "@clerk/nextjs";
-import path from "path";
-import { log } from "console";
+import { clerkClient } from "@clerk/nextjs/server";
 import { convertBase64 } from "../utils";
 
 export const createUser = async (userData: CreateUserParams) => {
@@ -91,6 +89,22 @@ export const updateImageProfile = async (
     revalidatePath("/");
   } catch (error) {
     console.log("update Image error", error);
+    throw error;
+  }
+};
+
+export const updateUser = async ({
+  clerkId,
+  path,
+  updateData,
+}: UpdateUserParams) => {
+  try {
+    connectToDB();
+    await User.findOneAndUpdate({ clerkId }, updateData, { new: true });
+    revalidatePath(path);
+    revalidatePath("/");
+  } catch (error) {
+    console.error(error);
     throw error;
   }
 };

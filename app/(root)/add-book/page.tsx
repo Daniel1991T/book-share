@@ -181,7 +181,7 @@ const AddBook = () => {
             name="gender"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor={field.name}>Gender</FormLabel>
+                <h2>Gender</h2>
                 <FormControl>
                   <ToggleGroup
                     disabled={form.getValues("isGenerate")}

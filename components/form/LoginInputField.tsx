@@ -26,8 +26,10 @@ const LoginInputField: React.FC<LoginInputFieldProps> = ({
         <FormItem>
           <FormControl>
             <Input
+              id={field.name}
               formNoValidate={name === "email"}
               type={typeInput}
+              autoComplete={name === "email" ? "off" : "on"}
               className="rounded-full"
               placeholder={placeholder}
               {...field}

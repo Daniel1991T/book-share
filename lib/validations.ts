@@ -23,6 +23,29 @@ export const RegisterSchema = z.object({
   city: z.string().min(3).max(255),
 });
 
+export const EditProfileSchema = z.object({
+  name: z.string().min(1).max(255),
+  surname: z.string().min(1).max(255),
+  phone: z
+    .string()
+    .regex(phoneRegex, "Invalid phone number")
+    .min(10, "Phone number too short")
+    .max(15, "Phone number too long"),
+  country: z.string().min(1).max(255),
+  city: z.string().min(1).max(255),
+  bio: z.string().min(15).max(255),
+});
+
+export type EditProfileInputType =
+  | "name"
+  | "surname"
+  | "phone"
+  | "bio"
+  | "country"
+  | "city";
+
+export type EditProfileType = z.infer<typeof EditProfileSchema>;
+
 export const OtpSchema = z.object({
   pin: z
     .string()

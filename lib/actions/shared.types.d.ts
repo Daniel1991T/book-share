@@ -1,3 +1,5 @@
+import { TUser } from "@/database/user.model";
+
 export type CreateUserParams = {
   clerkId: string;
   name: string;
@@ -34,5 +36,11 @@ export type GetListingBooksParams = {
 export type ToggleAddWishlistParams = {
   userId: string;
   listingBookId: string;
+  path: string;
+};
+
+export type UpdateUserParams = {
+  clerkId: string;
+  updateData: Partial<TUser>;
   path: string;
 };

@@ -40,7 +40,7 @@ const FilterByGender = () => {
   };
   return (
     <ToggleGroup
-      id="gender"
+      id="gender-filter"
       onValueChange={(value) => {
         handleUpdateParams(value);
       }}
