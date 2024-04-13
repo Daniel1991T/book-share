@@ -5,7 +5,6 @@ import { Suspense, useState } from "react";
 import { SingleImageDropzone } from "./SingleImageDropzone";
 import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 import { Button } from "./ui/button";
-import { Skeleton } from "./ui/skeleton";
 import UserImageSkeleton from "./UserImageSkeleton";
 
 const UploadUserImage = () => {
@@ -68,11 +67,11 @@ const UploadUserImage = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col p-4">
+        <div className="flex flex-col p-4 overflow-hidden">
           <LazyMotion features={domAnimation} strict>
             <div aria-expanded={open}>
               <AnimatePresence initial={false}>
-                {open && (
+                {open ? (
                   <m.div
                     initial="collapsed"
                     animate="open"
@@ -93,7 +92,7 @@ const UploadUserImage = () => {
                       onChange={(file) => saveImage(file)}
                     />
                   </m.div>
-                )}
+                ) : null}
               </AnimatePresence>
             </div>
           </LazyMotion>
