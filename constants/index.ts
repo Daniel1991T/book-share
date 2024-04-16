@@ -14,6 +14,25 @@ export type ProfileLink = {
   value: string;
 };
 
+export type FollowLink = {
+  label: string;
+  value: string;
+  route: string;
+};
+
+export const followTabs: FollowLink[] = [
+  {
+    label: "Followers",
+    value: "followers",
+    route: "/profile/followings/followers",
+  },
+  {
+    label: "Followings",
+    value: "followings",
+    route: "/profile/followings",
+  },
+];
+
 export const profileLinks: ProfileLink[] = [
   {
     imgURL: BookOpenIcon,
