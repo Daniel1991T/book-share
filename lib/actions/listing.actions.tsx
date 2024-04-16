@@ -6,8 +6,11 @@ import ListingBooks, {
 import { connectToDB } from "../mongodb";
 import { ListingBooksType } from "@/types";
 import MyBookCard from "@/components/cards/MyBookCard";
-import User from "@/database/user.model";
+import User, { TUser, USER_MODEL_MONGODB } from "@/database/user.model";
 import { BOOKS_COLLECTIONS_MODEL_MONGODB } from "@/database/book.model";
+import { get } from "http";
+import { getUserByClerkId } from "./user.actions";
+import { clerkClient } from "@clerk/nextjs/server";
 
 export const getListingBookByClerkId = async ({
   clerk_id,
@@ -90,5 +93,27 @@ export const getUserWishlist = async ({
   } catch (error: any) {
     console.error(`Failed to get user wishlist: ${error.message}`);
     throw new Error(`Failed to get user wishlist: ${error.message}`);
+  }
+};
+
+export const getListingBookById = async (id: string) => {
+  try {
+    connectToDB();
+    const listingBook = await ListingBooks.findById(id).populate({
+      path: "book_id",
+      model: BOOKS_COLLECTIONS_MODEL_MONGODB,
+    });
+    if (!listingBook) throw new Error("Listing book not found!");
+    const user = await getUserByClerkId(listingBook.clerk_id);
+    if (!user) throw new Error("User not found!");
+    const userAvatar = await clerkClient.users.getUser(listingBook.clerk_id);
+    return {
+      listingBook: listingBook as ListingBooksType,
+      user: user,
+      imageUrl: userAvatar.imageUrl,
+    };
+  } catch (error: any) {
+    console.error(`Failed to get listing book by id: ${error.message}`);
+    throw new Error(`Failed to get listing book by id: ${error.message}`);
   }
 };

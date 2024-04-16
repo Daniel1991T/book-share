@@ -68,13 +68,10 @@ const AddBook = () => {
   const bookIdSearchParams = searchParams.get("book_id");
 
   useEffect(() => {
-    console.log("book_id ->>", bookIdSearchParams);
-
     const fetchBook = async () => {
       try {
         const { book } = await getBookById(bookIdSearchParams!);
         if (book) {
-          console.log("book ->>", book);
           form.setValue("isGenerate", true);
           form.setValue("title", book.title);
           form.setValue("author", book.author);

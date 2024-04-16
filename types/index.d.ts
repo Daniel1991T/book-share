@@ -16,6 +16,10 @@ export interface SearchParamsProps {
   searchParams: { [key: string]: string | undefined };
 }
 
+export type ParamsProps = {
+  params: { id: string };
+};
+
 export type ListingBooksType = {
   _id: string;
   clerk_id: string;

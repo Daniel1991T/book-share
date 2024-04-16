@@ -1,6 +1,6 @@
 "use server";
 
-import User from "@/database/user.model";
+import User, { TUser } from "@/database/user.model";
 import { connectToDB } from "../mongodb";
 import {
   CreateUserParams,
@@ -10,6 +10,7 @@ import {
 import { revalidatePath } from "next/cache";
 import { clerkClient } from "@clerk/nextjs/server";
 import { convertBase64 } from "../utils";
+import ListingBooks from "@/database/listing.model";
 
 export const createUser = async (userData: CreateUserParams) => {
   try {
@@ -51,6 +52,8 @@ export const toggleAddToWishlist = async ({
 
     if (isBookInWishlist) {
       // remove question from user saved question
+      console.log("remove");
+
       await User.findByIdAndUpdate(
         userId,
         { $pull: { wishlist: listingBookId } },
@@ -58,6 +61,8 @@ export const toggleAddToWishlist = async ({
       );
     } else {
       // add question to user saved question
+      console.log("add");
+
       await User.findByIdAndUpdate(
         userId,
         { $push: { wishlist: listingBookId } },
@@ -106,5 +111,22 @@ export const updateUser = async ({
   } catch (error) {
     console.error(error);
     throw error;
+  }
+};
+
+export const getUserDetail = async (clerkId: string) => {
+  console.log("user detail", clerkId);
+
+  try {
+    connectToDB();
+    const user = (await User.findOne({ clerkId })) as TUser;
+    const userAvatar = await clerkClient.users.getUser(clerkId);
+    const numOfListing = await ListingBooks.countDocuments({
+      clerk_id: clerkId,
+    });
+    return { user, imageUrl: userAvatar.imageUrl, numOfListing };
+  } catch (error: any) {
+    console.error(`Failed to get user detail: ${error.message}`);
+    throw new Error(`Failed to get user detail: ${error.message}`);
   }
 };

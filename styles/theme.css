@@ -247,3 +247,21 @@
 .rating-not-changeable:not(:checked) > label:before {
   content: "★";
 }
+
+.truncate {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  max-height: var(--truncate-height, auto);
+  max-width: 550px;
+  margin: 0 auto;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.truncate--line-clamped {
+  -webkit-line-clamp: 3;
+}
+
+.truncate--expanded {
+  max-height: var(--truncate-height-expanded, auto);
+}

@@ -8,6 +8,7 @@ import { getListingBooks } from "@/lib/actions/book.actions";
 import { getUserByClerkId } from "@/lib/actions/user.actions";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs";
+import Link from "next/link";
 
 const Home = async ({ searchParams }: SearchParamsProps) => {
   const { userId: clerkId } = auth();
