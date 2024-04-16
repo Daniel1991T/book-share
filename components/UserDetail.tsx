@@ -3,11 +3,19 @@ import { MapPin } from "lucide-react";
 import Image from "next/image";
 import PlainStarRating from "./PlainStarRating";
 import FollowUnFollow from "./shared/FollowUnFollow";
+import { log } from "console";
 
-const UserDetail = async ({ clerk_id }: { clerk_id: string }) => {
+const UserDetail = async ({
+  clerk_id,
+  authUserId,
+}: {
+  clerk_id: string;
+  authUserId: string;
+}) => {
   const { user, imageUrl, numOfListing, isFollowing } = await getUserDetail(
     clerk_id
   );
+
   return (
     <div className="flex w-full p-4 items-center">
       <Image
@@ -32,10 +40,12 @@ const UserDetail = async ({ clerk_id }: { clerk_id: string }) => {
           Other book: <span>{numOfListing}</span>
         </p>
 
-        <FollowUnFollow
-          follow_user_id={JSON.stringify(user._id)}
-          isFollowing={isFollowing}
-        />
+        {authUserId !== JSON.stringify(user._id) && (
+          <FollowUnFollow
+            follow_user_id={JSON.stringify(user._id)}
+            isFollowing={isFollowing}
+          />
+        )}
       </div>
     </div>
   );

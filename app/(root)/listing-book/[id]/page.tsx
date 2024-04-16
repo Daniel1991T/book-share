@@ -87,7 +87,10 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
                 />
               </div>
             )}
-            <UserDetail clerk_id={listingBook.clerk_id} />
+            <UserDetail
+              clerk_id={listingBook.clerk_id}
+              authUserId={JSON.stringify(mongoUser._id)}
+            />
           </div>
         </div>
         <div className="space-y-2 w-1/2">
