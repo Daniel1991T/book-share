@@ -34,7 +34,7 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
     <section className="flex mt-16 w-full pt-2 justify-center flex-col items-center">
       <div className="flex flex-col gap-4 w-full max-w-4xl">
         <div className="flex w-full flex-col md:flex-row">
-          <div className="flex w-1/2 items-center justify-center relative">
+          <div className="flex w-full md:w-1/2 items-center justify-center relative">
             <img
               className="w-2/3 md:w-2/3 h-full m-auto object-cover rounded-xl"
               src={listingBook.book_id.cover_url[0]}
@@ -54,7 +54,7 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
             </div>
           </div>
 
-          <div className="px-2 py-4 w-1/2">
+          <div className="px-2 py-4 w-full md:w-1/2">
             <h1 className="text-2xl font-semibold">
               {listingBook.book_id.title}
             </h1>
@@ -93,7 +93,7 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
             />
           </div>
         </div>
-        <div className="space-y-2 w-1/2">
+        <div className="space-y-2 w-full px-2 md:w-1/2">
           <DescriptionText text={listingBook.book_id.description} />
           <BookPropsText
             name="Condition"
