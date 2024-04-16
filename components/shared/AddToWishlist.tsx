@@ -20,8 +20,6 @@ const AddToWishlist = ({
   const pathname = usePathname();
 
   const handleSave = async () => {
-    console.log("listingBookId", listingBookId, userId);
-
     await toggleAddToWishlist({
       userId: JSON.parse(userId!),
       listingBookId: JSON.parse(listingBookId!),

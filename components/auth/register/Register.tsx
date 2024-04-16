@@ -66,9 +66,6 @@ const Register = ({ closeModal }: RegisterProps) => {
       await signUp.create({
         emailAddress: values.email,
         password: values.password,
-        firstName: values.name,
-        lastName: values.surname,
-        phoneNumber: values.phone,
       });
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setIsVerifying(true);
@@ -144,7 +141,6 @@ const Register = ({ closeModal }: RegisterProps) => {
   };
 
   const signUpWith = async (strategy: OAuthStrategy) => {
-    console.log(strategy);
     if (!isLoaded) return;
 
     try {
@@ -153,7 +149,6 @@ const Register = ({ closeModal }: RegisterProps) => {
         redirectUrl: "/sso-callback",
         actionCompleteRedirectUrl: "/",
       });
-      console.log(result);
     } catch (error) {
       console.log(error);
     }

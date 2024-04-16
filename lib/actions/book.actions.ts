@@ -31,7 +31,6 @@ export const addBookToDB = async (book: BookType, book_id: string | null) => {
         cover_url: urlsCover,
       });
     }
-    console.log(book_id);
 
     const listingBook = await ListingBooks.create({
       book_id: bookResult?._id ? bookResult._id : book_id,
@@ -40,7 +39,6 @@ export const addBookToDB = async (book: BookType, book_id: string | null) => {
       for_trade: book.isFree === "free" ? true : false,
       price: book.price,
     });
-    console.log(listingBook);
     revalidatePath("/");
   } catch (error: any) {
     console.log(error);

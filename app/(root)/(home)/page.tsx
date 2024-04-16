@@ -2,13 +2,12 @@ import BookCard from "@/components/cards/BookCard";
 import FilterByCountry from "@/components/FilterByCountry";
 import FilterByGender from "@/components/FilterByGender";
 import Pagination from "@/components/Pagination";
-import { FILTER_URL_PARAMS, GENDER_BOOK_FILTER } from "@/constants/filter";
+import { GENDER_BOOK_FILTER } from "@/constants/filter";
 import { TUser } from "@/database/user.model";
 import { getListingBooks } from "@/lib/actions/book.actions";
 import { getUserByClerkId } from "@/lib/actions/user.actions";
 import { SearchParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs";
-import Link from "next/link";
 
 const Home = async ({ searchParams }: SearchParamsProps) => {
   const { userId: clerkId } = auth();
@@ -28,7 +27,6 @@ const Home = async ({ searchParams }: SearchParamsProps) => {
   let mongoUser: TUser;
   if (clerkId) {
     mongoUser = await getUserByClerkId(clerkId);
-    console.log("mongoUser", mongoUser, clerkId);
   }
 
   return (

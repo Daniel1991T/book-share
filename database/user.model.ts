@@ -14,6 +14,7 @@ export type TUser = {
   rating?: number;
   reputation: Schema.Types.ObjectId[];
   wishlist: Schema.Types.ObjectId[];
+  followUser: Schema.Types.ObjectId[];
   joinedAt: Date;
 } & Document;
 
@@ -31,6 +32,7 @@ const UserSchema = new Schema<TUser>({
   rating: { type: Number, default: 0 },
   reputation: [{ type: Schema.Types.ObjectId, ref: "Review" }],
   wishlist: [{ type: Schema.Types.ObjectId, ref: "Listing" }],
+  followUser: [{ type: Schema.Types.ObjectId, ref: "User" }],
   joinedAt: { type: Date, default: Date.now },
 });
 

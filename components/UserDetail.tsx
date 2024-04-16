@@ -2,10 +2,12 @@ import { getUserDetail } from "@/lib/actions/user.actions";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 import PlainStarRating from "./PlainStarRating";
-import { Button } from "./ui/button";
+import FollowUnFollow from "./shared/FollowUnFollow";
 
 const UserDetail = async ({ clerk_id }: { clerk_id: string }) => {
-  const { user, imageUrl, numOfListing } = await getUserDetail(clerk_id);
+  const { user, imageUrl, numOfListing, isFollowing } = await getUserDetail(
+    clerk_id
+  );
   return (
     <div className="flex w-full p-4 items-center">
       <Image
@@ -30,12 +32,10 @@ const UserDetail = async ({ clerk_id }: { clerk_id: string }) => {
           Other book: <span>{numOfListing}</span>
         </p>
 
-        <Button
-          variant={"outline"}
-          className="text-como border-como rounded-full mt-2"
-        >
-          Follow
-        </Button>
+        <FollowUnFollow
+          follow_user_id={JSON.stringify(user._id)}
+          isFollowing={isFollowing}
+        />
       </div>
     </div>
   );

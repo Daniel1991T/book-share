@@ -23,7 +23,6 @@ export const getListingBookByClerkId = async ({
 }) => {
   try {
     connectToDB();
-    console.log("clerk_id", JSON.stringify(clerk_id));
 
     const listings = (await ListingBooks.find({ clerk_id: clerk_id })
       .populate({
@@ -37,7 +36,6 @@ export const getListingBookByClerkId = async ({
       clerk_id: clerk_id,
     });
     const isNext = totalListingBooks > page * pageSize + listings.length;
-    console.log("isNext", isNext);
 
     return {
       listings: listings.map((listing, index) => (
@@ -72,9 +70,6 @@ export const getUserWishlist = async ({
         model: BOOKS_COLLECTIONS_MODEL_MONGODB,
       },
     });
-
-    console.log("user", user);
-
     if (!user) throw new Error("User not found!");
     //  const wishlistCount = await User.countDocuments({
     //    clerkId: clerk_id,

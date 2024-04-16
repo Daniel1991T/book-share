@@ -12,8 +12,6 @@ import { ObjectId } from "mongoose";
 import Link from "next/link";
 
 const BookPropsText = ({ text, name }: { text: string; name: string }) => {
-  console.log("BookPropsText", text, name);
-
   return (
     <p className="flex font-inter flex-row items-end space-x-1 text-slate-400 text-sm">
       <span>{name}</span>
@@ -25,11 +23,10 @@ const BookPropsText = ({ text, name }: { text: string; name: string }) => {
 
 const ListingBookPage = async ({ params }: ParamsProps) => {
   const { userId: clerkId } = auth();
-  const { listingBook, user, imageUrl } = await getListingBookById(params.id);
+  const { listingBook } = await getListingBookById(params.id);
   let mongoUser: TUser | null = null;
   if (clerkId) {
     mongoUser = await getUserByClerkId(clerkId);
-    console.log("mongoUser", mongoUser?.id, clerkId);
   }
 
   if (!mongoUser) return null;

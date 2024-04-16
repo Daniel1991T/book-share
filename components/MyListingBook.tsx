@@ -34,7 +34,6 @@ const ListingBook = ({ listingBooksType }: ListingBookProps) => {
       setIsNext(isNext);
     };
     const loadNextWishlist = async () => {
-      console.log(userId);
       const { wishlist, hasNext: isNext } = await getUserWishlist({
         clerk_id: userId!,
         page: offset,

@@ -39,6 +39,11 @@ export type ToggleAddWishlistParams = {
   path: string;
 };
 
+export type ToggleFollowUserParams = {
+  followUserId: string;
+  path: string;
+};
+
 export type UpdateUserParams = {
   clerkId: string;
   updateData: Partial<TUser>;

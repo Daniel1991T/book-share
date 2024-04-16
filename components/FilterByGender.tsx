@@ -18,8 +18,6 @@ const FilterByGender = () => {
     GENDER_BOOK_FILTER.RECENT_ADDED;
 
   const handleUpdateParams = (value: string) => {
-    console.log(`value -> ${value}`, paramFilter);
-
     if (value === paramFilter || !value) {
       const newUrl = formUrlQuery({
         params: searchParams.toString(),

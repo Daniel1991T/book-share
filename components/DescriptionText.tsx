@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { MotionDiv } from "./shared/MotionDiv";
-import { motion } from "framer-motion";
 
 const variants = {
   hidden: { opacity: 0 },
