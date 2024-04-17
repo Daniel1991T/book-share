@@ -1,11 +1,12 @@
 import FollowCard from "@/components/cards/FollowCard";
+import { TUser } from "@/database/user.model";
 import { getFollowers, getUserByClerkId } from "@/lib/actions/user.actions";
 import { auth } from "@clerk/nextjs";
 
 const FollowersPage = async () => {
   const { userId } = auth();
   if (!userId) return <div>loading...</div>;
-  let mongoUser;
+  let mongoUser: TUser | null = null;
   if (userId) {
     mongoUser = await getUserByClerkId(userId);
   }
@@ -18,7 +19,7 @@ const FollowersPage = async () => {
         <FollowCard
           key={follower._id}
           follow={follower}
-          isFollowing={mongoUser?.followUser.includes(follower._id)}
+          isFollowing={mongoUser?.followUser.includes(follower._id as any)}
         />
       ))}
     </div>
