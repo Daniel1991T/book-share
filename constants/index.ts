@@ -22,14 +22,14 @@ export type FollowLink = {
 
 export const followTabs: FollowLink[] = [
   {
-    label: "Followers",
-    value: "followers",
-    route: "/profile/followings/followers",
-  },
-  {
     label: "Followings",
     value: "followings",
     route: "/profile/followings",
+  },
+  {
+    label: "Followers",
+    value: "followers",
+    route: "/profile/followings/followers",
   },
 ];
 

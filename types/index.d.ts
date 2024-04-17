@@ -29,3 +29,21 @@ export type ListingBooksType = {
   listed_at: Date;
   book_id: BookType;
 };
+
+export type FollowResponseType = {
+  _id: string;
+  clerkId: string;
+  mongoUserId: string;
+  name: string;
+  surname: string;
+  country: string;
+  city: string;
+  imageAvatar: string;
+  firstListing: FirstListingBook[];
+};
+
+export type FirstListingBook = {
+  _id: string;
+  book_id: Pick<BookType, "title" | "cover_url">;
+  listed_at: Date;
+};

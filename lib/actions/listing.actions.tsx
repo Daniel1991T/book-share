@@ -6,9 +6,8 @@ import ListingBooks, {
 import { connectToDB } from "../mongodb";
 import { ListingBooksType } from "@/types";
 import MyBookCard from "@/components/cards/MyBookCard";
-import User, { TUser, USER_MODEL_MONGODB } from "@/database/user.model";
+import User from "@/database/user.model";
 import { BOOKS_COLLECTIONS_MODEL_MONGODB } from "@/database/book.model";
-import { get } from "http";
 import { getUserByClerkId } from "./user.actions";
 import { clerkClient } from "@clerk/nextjs/server";
 

@@ -1,6 +1,6 @@
 "use server";
 
-import User, { TUser } from "@/database/user.model";
+import User, { TUser, USER_MODEL_MONGODB } from "@/database/user.model";
 import { connectToDB } from "../mongodb";
 import {
   CreateUserParams,
@@ -12,6 +12,9 @@ import { revalidatePath } from "next/cache";
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { convertBase64 } from "../utils";
 import ListingBooks from "@/database/listing.model";
+import { BOOKS_COLLECTIONS_MODEL_MONGODB } from "@/database/book.model";
+import { FollowResponseType } from "@/types";
+import { log } from "console";
 
 export const createUser = async (userData: CreateUserParams) => {
   try {
@@ -83,34 +86,18 @@ export const toggleFollowUser = async ({
     const authUser = await User.findOne({ clerkId: userId });
     if (!authUser) throw new Error("Auth user not found");
 
-    const isFollowing = authUser.followUser?.includes(followUserId);
     if (authUser._id === followUserId) throw new Error("Can't follow yourself");
     console.log("authUser clerk", userId);
     console.log("auth", authUser);
     console.log("follow:", followUserId);
+    const isFollowing = authUser.followUser?.includes(followUserId);
 
-    if (isFollowing) {
-      // remove question from user saved question
-      console.log("remove");
+    const update = isFollowing
+      ? { $pull: { followUser: followUserId } }
+      : { $push: { followUser: followUserId } };
+    await User.findByIdAndUpdate(authUser._id, update, { new: true });
 
-      await User.findByIdAndUpdate(
-        authUser?._id,
-        { $pull: { followUser: followUserId } },
-        { new: true }
-      );
-    } else {
-      // add question to user saved question
-      console.log("add");
-
-      await User.findByIdAndUpdate(
-        authUser?._id,
-        { $push: { followUser: followUserId } },
-        { new: true }
-      ).catch((error) => {
-        console.log(error);
-        throw error;
-      });
-    }
+    console.log("path", path);
 
     revalidatePath(path);
   } catch (error) {
@@ -128,7 +115,7 @@ export const updateImageProfile = async (
     const imageBase64 = await convertBase64(image);
     const updatedImage = await clerkClient.users
       .updateUserProfileImage(clerkId, { file: imageBase64 as File })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error(error);
       });
     revalidatePath(path);
@@ -175,5 +162,87 @@ export const getUserDetail = async (clerkId: string) => {
   } catch (error: any) {
     console.error(`Failed to get user detail: ${error.message}`);
     throw new Error(`Failed to get user detail: ${error.message}`);
+  }
+};
+
+export const getFollowings = async (clerkId: string) => {
+  try {
+    connectToDB();
+
+    const user = await User.findOne({ clerkId: clerkId }).populate({
+      path: "followUser",
+      model: USER_MODEL_MONGODB,
+    });
+    if (!user) throw new Error("User not found");
+
+    const followings = await Promise.all(
+      user.followUser.map(async (fUser: any) => {
+        const userWithAvatar = await clerkClient.users.getUser(
+          fUser.clerkId.toString()
+        );
+        const firstListing = await ListingBooks.find({
+          clerk_id: fUser.clerkId,
+        })
+          .populate({
+            path: "book_id",
+            model: BOOKS_COLLECTIONS_MODEL_MONGODB,
+            select: "cover_url title",
+          })
+          .sort({ listed_at: -1 })
+          .limit(5);
+        const mongoUserId = await getUserByClerkId(fUser.clerkId);
+        return {
+          ...fUser.toJSON(), // Convert Mongoose document to plain object
+          imageAvatar: userWithAvatar.imageUrl,
+          mongoUserId: mongoUserId?._id,
+          firstListing, // Ensure correct field name
+        };
+      })
+    ).catch((error) => {
+      console.log(error);
+      throw error;
+    });
+
+    return { followings: followings as unknown as FollowResponseType[] };
+  } catch (error: any) {
+    console.error(`Failed to get followings: ${error.message}`);
+    throw new Error(`Failed to get followings: ${error.message}`);
+  }
+};
+
+export const getFollowers = async (
+  mongoUserId: string
+): Promise<FollowResponseType[]> => {
+  try {
+    connectToDB();
+
+    const followers = await User.find({
+      followUser: JSON.parse(mongoUserId),
+    });
+    const response = await Promise.all(
+      followers.map(async (user) => {
+        const userWithAvatar = await clerkClient.users.getUser(user.clerkId);
+        const firstListing = await ListingBooks.find({ clerk_id: user.clerkId })
+          .populate({
+            path: "book_id",
+            model: BOOKS_COLLECTIONS_MODEL_MONGODB,
+            select: "cover_url title",
+          })
+          .sort({ listed_at: -1 })
+          .limit(5);
+        return {
+          ...user.toJSON(),
+          imageAvatar: userWithAvatar.imageUrl,
+          firstListing,
+        };
+      })
+    ).catch((error) => {
+      console.log(error);
+      throw error;
+    });
+    return response as unknown as FollowResponseType[];
+  } catch (error: any) {
+    console.error(`Failed to get followers: ${error.message}`);
+    throw new Error(`Failed to get followers: ${error.message}`);
   }
 };
