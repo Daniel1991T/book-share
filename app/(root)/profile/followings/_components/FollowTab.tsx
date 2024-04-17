@@ -21,11 +21,12 @@ const FollowTab = () => {
               <TabsTrigger
                 onClick={() => setPathname(link.value)}
                 value={link.value}
-                className="data-[state=active]:border-2 rounded-full data-[state=active]:bg-como_v-50  data-[state=active]:border-como 
-               w-auto md:w-44 gap-2 data-[state=active]:text-como data-[state=active]:font-bold
+                className="data-[state=active]:border-2 rounded-full data-[state=active]:bg-como_v-50 
+                 data-[state=active]:border-como 
+               w-auto  gap-2 data-[state=active]:text-como data-[state=active]:font-bold
               stroke-1 !data-[state=active]:stroke-2"
               >
-                <p className="hidden sm:inline-block">{link.label}</p>
+                <p className="flex">{link.label}</p>
               </TabsTrigger>
             </Link>
           ))}
