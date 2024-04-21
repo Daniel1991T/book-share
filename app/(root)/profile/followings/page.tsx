@@ -2,8 +2,10 @@ import FollowCard from "@/components/cards/FollowCard";
 import { TUser } from "@/database/user.model";
 import { getFollowings, getUserByClerkId } from "@/lib/actions/user.actions";
 import { auth } from "@clerk/nextjs";
+import { unstable_noStore as noStore } from "next/cache";
 
 const Followings = async () => {
+  noStore();
   const { userId } = auth();
   const { followings } = await getFollowings(userId!);
   let mongoUser: TUser;
