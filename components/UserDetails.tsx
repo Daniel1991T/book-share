@@ -29,7 +29,12 @@ const UserDetails = () => {
       try {
         const { user, imageUrl, numOfListing, isFollowing } =
           await getUserDetail(clerk_id);
-        setState({ user, imageUrl, numOfListing, isFollowing });
+        setState({
+          user,
+          imageUrl,
+          numOfListing,
+          isFollowing: isFollowing ? isFollowing : false,
+        });
       } catch (error: any) {
         console.error(error);
       } finally {
