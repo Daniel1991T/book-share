@@ -1,8 +1,5 @@
 import ProfileTabs from "@/components/ProfileTabs";
-import UserDetail from "@/components/UserDetail";
 import UserDetails from "@/components/UserDetails";
-import Image from "next/image";
-import { Suspense } from "react";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (

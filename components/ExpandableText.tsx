@@ -25,7 +25,7 @@ const ExpandableText = ({ text }: ExpandableTextProps) => {
       const timer = setTimeout(() => {
         myRef.current?.scrollIntoView({
           behavior: "smooth",
-          block: "nearest",
+          block: "center",
           inline: "start",
         });
       }, 200); // Delay might need to be adjusted based on content size
@@ -57,7 +57,7 @@ const ExpandableText = ({ text }: ExpandableTextProps) => {
         >
           {text}
         </CollapsibleContent>
-        <CollapsibleTrigger className="flex items-start text-como_v-400">
+        <CollapsibleTrigger className="flex items-start focus:outline-none text-como_v-400">
           {checked ? "Read less" : "Read more"}
         </CollapsibleTrigger>
       </Collapsible>

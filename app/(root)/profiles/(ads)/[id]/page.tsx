@@ -1,9 +1,5 @@
 import ListingBook from "@/components/ListingBooks";
-import MyBookCard from "@/components/cards/MyBookCard";
-import {
-  getListingBookByClerkId,
-  getListingBookByUserId,
-} from "@/lib/actions/listing.actions";
+import { getListingBookByClerkId } from "@/lib/actions/listing.actions";
 import { ParamsProps } from "@/types";
 import Image from "next/image";
 import { Suspense } from "react";
