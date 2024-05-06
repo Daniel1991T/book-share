@@ -8,15 +8,17 @@ import {
 } from "@/lib/actions/listing.actions";
 import Image from "next/image";
 
-const NUMBER_OF_LISTING_BOOKS_TO_FETCH = 5;
-
 export type ListingBooksJSX = JSX.Element;
 
 type ListingBookProps = {
   listingBooksType: "wishlist" | "my-adds";
+  clerk_id_passed?: string;
 };
 
-const ListingBook = ({ listingBooksType }: ListingBookProps) => {
+const ListingBook = ({
+  listingBooksType,
+  clerk_id_passed,
+}: ListingBookProps) => {
   const { userId } = useAuth();
   const [offset, setOffset] = useState(2);
   const [listingBooks, setListingBooks] = useState<ListingBooksJSX[]>([]);
@@ -26,7 +28,7 @@ const ListingBook = ({ listingBooksType }: ListingBookProps) => {
   useEffect(() => {
     const loadNextListings = async () => {
       const { listings, isNext } = await getListingBookByClerkId({
-        clerk_id: userId!,
+        clerk_id: clerk_id_passed ? clerk_id_passed : userId!,
         page: offset,
       });
       setListingBooks([...listingBooks, ...listings]);
@@ -50,7 +52,15 @@ const ListingBook = ({ listingBooksType }: ListingBookProps) => {
         loadNextListings();
       }
     }
-  }, [inView, listingBooks, offset, userId, isNext, listingBooksType]);
+  }, [
+    inView,
+    listingBooks,
+    offset,
+    userId,
+    isNext,
+    listingBooksType,
+    clerk_id_passed,
+  ]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">

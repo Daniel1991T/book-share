@@ -29,7 +29,7 @@ export const followTabs: FollowLink[] = [
   {
     label: "Followers",
     value: "followers",
-    route: "/profile/followings/followers",
+    route: "/profile/followers",
   },
 ];
 
