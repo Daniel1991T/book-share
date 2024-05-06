@@ -12,8 +12,6 @@ const UserDetail = async ({
   clerk_id: string;
   authUserId: string;
 }) => {
-  console.log("clerk_id", clerk_id);
-
   const { user, imageUrl, numOfListing, isFollowing } = await getUserDetail(
     clerk_id
   );
@@ -47,7 +45,7 @@ const UserDetail = async ({
         {authUserId !== JSON.stringify(user._id) && (
           <FollowUnFollow
             follow_user_id={JSON.stringify(user._id)}
-            isFollowing={isFollowing}
+            isFollowing={isFollowing ? isFollowing : false}
           />
         )}
       </div>

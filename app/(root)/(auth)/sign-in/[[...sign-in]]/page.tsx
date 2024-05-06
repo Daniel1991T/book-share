@@ -1,8 +1,12 @@
+import { SearchParamsProps } from "@/types";
 import { SignIn } from "@clerk/nextjs";
 
-export default function Page() {
+export default function Page({ searchParams }: SearchParamsProps) {
+  console.log("props", searchParams);
+
   return (
     <SignIn
+      afterSignInUrl={searchParams?.redirect}
       appearance={{
         variables: {
           colorPrimary: "#558B78",

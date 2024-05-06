@@ -31,7 +31,6 @@ export const getUserByClerkId = async (userId: string) => {
   try {
     connectToDB();
     const user = await User.findOne({ clerkId: userId });
-
     return user;
   } catch (error: any) {
     console.log(error);
@@ -157,8 +156,10 @@ export const getUserDetail = async (clerkId: string) => {
   try {
     connectToDB();
     const { userId } = auth();
-    if (!userId) throw new Error("User not found");
-    const me = (await User.findOne({ clerkId: userId })) as TUser;
+    let me: TUser | null = null;
+    if (userId) {
+      me = (await User.findOne({ clerkId: userId })) as TUser;
+    }
     const user = (await User.findOne({ clerkId })) as TUser;
     const userAvatar = await clerkClient.users.getUser(clerkId);
     const numOfListing = await ListingBooks.countDocuments({
@@ -168,7 +169,7 @@ export const getUserDetail = async (clerkId: string) => {
       user,
       imageUrl: userAvatar.imageUrl,
       numOfListing,
-      isFollowing: me.followUser?.includes(user._id),
+      isFollowing: me?.followUser?.includes(user._id),
     };
   } catch (error: any) {
     console.error(`Failed to get user detail: ${error.message}`);

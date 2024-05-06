@@ -9,6 +9,7 @@ import { getListingBookById } from "@/lib/actions/listing.actions";
 import { getUserByClerkId } from "@/lib/actions/user.actions";
 import { ParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs";
+import { log } from "console";
 import { ObjectId } from "mongoose";
 import Link from "next/link";
 
@@ -30,7 +31,8 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
     mongoUser = await getUserByClerkId(clerkId);
   }
 
-  if (!mongoUser) return null;
+  console.log("listingBook", listingBook);
+
   return (
     <section className="flex mt-16 w-full pt-2 justify-center scroll-smooth flex-col items-center">
       <div className="flex flex-col gap-4 w-full max-w-4xl">
@@ -80,9 +82,11 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
                 </Link>
 
                 <AddToWishlist
-                  isWishlist={mongoUser?.wishlist.includes(
-                    listingBook._id as unknown as ObjectId
-                  )}
+                  isWishlist={
+                    mongoUser?.wishlist.includes(
+                      listingBook._id as unknown as ObjectId
+                    ) || false
+                  }
                   listingBookId={JSON.stringify(listingBook._id)}
                   userId={JSON.stringify(mongoUser?.id)}
                 />
@@ -90,7 +94,7 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
             )}
             <UserDetail
               clerk_id={listingBook.clerk_id}
-              authUserId={JSON.stringify(mongoUser._id)}
+              authUserId={JSON.stringify(mongoUser?._id)}
             />
           </div>
         </div>
