@@ -49,3 +49,9 @@ export type UpdateUserParams = {
   updateData: Partial<TUser>;
   path: string;
 };
+
+export type ListingBooksByUserIdParams = {
+  userId: string;
+  page?: number;
+  pageSize?: number;
+};

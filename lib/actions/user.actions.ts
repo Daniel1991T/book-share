@@ -142,6 +142,17 @@ export const updateUser = async ({
   }
 };
 
+export const getUserClerkId = async (userId: string) => {
+  try {
+    connectToDB();
+    const user = await User.findOne({ _id: userId }).select("clerkId");
+    return user?.clerkId;
+  } catch (error: any) {
+    console.error(`Failed to get user clerkId: ${error.message}`);
+    throw new Error(`Failed to get user clerkId: ${error.message}`);
+  }
+};
+
 export const getUserDetail = async (clerkId: string) => {
   try {
     connectToDB();

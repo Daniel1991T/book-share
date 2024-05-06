@@ -124,7 +124,13 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("tailwind-scrollbar")({
+      nocompatible: true,
+      preferredStrategy: "pseudoelements",
+    }),
+  ],
 } satisfies Config;
 
 export default config;

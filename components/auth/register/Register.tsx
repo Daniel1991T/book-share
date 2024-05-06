@@ -202,7 +202,7 @@ const Register = ({ closeModal }: RegisterProps) => {
     <div className="flex flex-col items-center justify-center">
       <h1 className="font-bold text-black text-xl">Create account</h1>
       <div className="flex items-center gap-4 py-5">
-        <SignUpButton>
+        {/* <SignUpButton>
           <Button
             onClick={() => signUpWith("oauth_google")}
             className="bg-alto hover:bg-gunsmoke p-1 h-12 w-12 rounded-full"
@@ -221,7 +221,16 @@ const Register = ({ closeModal }: RegisterProps) => {
           className="bg-alto hover:bg-gunsmoke p-1 h-12 w-12 rounded-full"
         >
           <BsApple className="size-6 text-black" />
-        </Button>
+        </Button> */}
+        <SignUpButton>
+          <Button
+            variant="outline"
+            className="outline-gunsmoke bg-white text-gunsmoke px-4 py-2 h-12 rounded-full
+            transition-all duration-200 ease-in-out hover:outline-como hover:text-como"
+          >
+            Create account with social
+          </Button>
+        </SignUpButton>
       </div>
       <hr className="bg-como h-[1px] w-full" />
       <Form {...form}>

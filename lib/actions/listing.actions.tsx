@@ -8,8 +8,9 @@ import { ListingBooksType } from "@/types";
 import MyBookCard from "@/components/cards/MyBookCard";
 import User from "@/database/user.model";
 import { BOOKS_COLLECTIONS_MODEL_MONGODB } from "@/database/book.model";
-import { getUserByClerkId } from "./user.actions";
+import { getUserByClerkId, getUserClerkId } from "./user.actions";
 import { clerkClient } from "@clerk/nextjs/server";
+import { ListingBooksByUserIdParams } from "./shared.types";
 
 export const getListingBookByClerkId = async ({
   clerk_id,
@@ -23,14 +24,17 @@ export const getListingBookByClerkId = async ({
   try {
     connectToDB();
 
-    const listings = (await ListingBooks.find({ clerk_id: clerk_id })
+    const listings = (await ListingBooks.find({
+      clerk_id: clerk_id,
+    })
       .populate({
         path: "book_id",
         model: "BooksCollections",
       })
       .skip((page - 1) * pageSize)
       .limit(pageSize)
-      .sort({ listed_at: -1 })) as ListingBooksType[];
+      .sort({ listed_at: -1 })
+      .catch((err) => console.log(err))) as ListingBooksType[];
     const totalListingBooks = await ListingBooks.countDocuments({
       clerk_id: clerk_id,
     });
@@ -45,6 +49,39 @@ export const getListingBookByClerkId = async ({
   } catch (error: any) {
     console.error(`Failed to get listing books: ${error.message}`);
     throw new Error(`Failed to get listing books: ${error.message}`);
+  }
+};
+
+export const getListingBookByUserId = async ({
+  userId,
+  page = 1,
+  pageSize = 10,
+}: ListingBooksByUserIdParams) => {
+  try {
+    connectToDB();
+    const clerkId = await getUserClerkId(userId);
+    if (!clerkId) throw new Error("User not found");
+    const listingsBook = (await ListingBooks.find({ clerk_id: clerkId })
+      .populate({
+        path: "book_id",
+        model: BOOKS_COLLECTIONS_MODEL_MONGODB,
+      })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize)
+      .sort({ listed_at: -1 })) as ListingBooksType[];
+    const totalListingBooks = await ListingBooks.countDocuments({
+      clerk_id: clerkId,
+    });
+    const hasNext = totalListingBooks > page * pageSize + listingsBook.length;
+    console.log(totalListingBooks, hasNext, listingsBook);
+
+    return {
+      listingsBook,
+      hasNext,
+    };
+  } catch (error: any) {
+    console.error(`Failed to get listing books by user id: ${error.message}`);
+    throw new Error(`Failed to get listing books by user id: ${error.message}`);
   }
 };
 

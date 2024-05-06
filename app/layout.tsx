@@ -28,7 +28,11 @@ export default function RootLayout({
         },
       }}
     >
-      <html className="bg-white" lang="en">
+      <html
+        className="bg-white w-screen scroll-smooth scrollbar-thumb-rounded-full scrollbar-track-rounded-full 
+        scrollbar overflow-x-hidden scrollbar-thumb-como scrollbar-track-como_v-100 overflow-y-scroll scrollbar-w-3"
+        lang="en"
+      >
         <body suppressHydrationWarning={true} className={inter.className}>
           {children}
         </body>

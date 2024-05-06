@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import DescriptionText from "@/components/DescriptionText";
+import ExpandableText from "@/components/ExpandableText";
 import UserDetail from "@/components/UserDetail";
 import AddToWishlist from "@/components/shared/AddToWishlist";
 import { Button } from "@/components/ui/button";
@@ -31,7 +32,7 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
 
   if (!mongoUser) return null;
   return (
-    <section className="flex mt-16 w-full pt-2 justify-center flex-col items-center">
+    <section className="flex mt-16 w-full pt-2 justify-center scroll-smooth flex-col items-center">
       <div className="flex flex-col gap-4 w-full max-w-4xl">
         <div className="flex w-full flex-col md:flex-row">
           <div className="flex w-full md:w-1/2 items-center justify-center relative">
@@ -94,7 +95,9 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
           </div>
         </div>
         <div className="space-y-2 w-full px-2 md:w-1/2">
-          <DescriptionText text={listingBook.book_id.description} />
+          {/* <DescriptionText text={listingBook.book_id.description} /> */}
+          <ExpandableText text={listingBook.book_id.description} />
+
           <BookPropsText
             name="Condition"
             text={listingBook.condition.toUpperCase()}
