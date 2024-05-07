@@ -24,8 +24,8 @@ const Ads = async ({ params }: ParamsProps) => {
           </div>
         }
       >
-        <div className="max-w-4xl lg:max-w-5xl w-full pt-4 justify-center items-center flex gap-2 flex-col mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
+        <div className="max-w-3xl lg:max-w-4xl xl:max-w-5xl w-full pt-4 justify-center items-center flex gap-2 flex-col mx-auto">
+          <div className="grid grid-cols-1 px-10 md:px-2 mx-auto md:grid-cols-2 gap-2 w-full">
             {listings}
           </div>
           <ListingBook listingBooksType="my-adds" param={params} />

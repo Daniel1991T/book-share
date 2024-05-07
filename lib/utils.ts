@@ -58,3 +58,15 @@ export const removeKeysFromQuery = ({
     { skipNull: true }
   );
 };
+
+export const extractUserId = (url: string): string | null => {
+  const regex = /user_([a-zA-Z0-9]+)/;
+  const match = url.match(regex);
+  return match ? match[0] : null;
+};
+
+export const extractDynamicSection = (url: string): string => {
+  const regex = /\/profiles\/([^\/]+)\/user_/;
+  const match = url.match(regex);
+  return match ? match[1] : "ads";
+};

@@ -45,7 +45,7 @@ const UserDetail = async ({
         {authUserId !== JSON.stringify(user._id) && (
           <FollowUnFollow
             follow_user_id={JSON.stringify(user._id)}
-            isFollowing={isFollowing ? isFollowing : false}
+            initialIsFollowing={isFollowing ? isFollowing : false}
           />
         )}
       </div>

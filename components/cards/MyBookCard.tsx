@@ -30,7 +30,7 @@ const MyBookCard = ({ listingBook, index }: MyBookCardProps) => {
           ease: "easeInOut",
         }}
         viewport={{ amount: 0 }}
-        className="bg-light-800 h-42 overflow-hidden items-start justify-start gap-2 w-4/5 md:w-full 
+        className="bg-light-800 h-42 overflow-hidden items-start justify-start gap-2 w-full 
     p-2 mx-6 rounded-2xl flex flex-row"
       >
         <Image

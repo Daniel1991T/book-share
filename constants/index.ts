@@ -65,3 +65,30 @@ export const profileLinks: ProfileLink[] = [
     value: "followings",
   },
 ];
+
+export const profilesLink: ProfileLink[] = [
+  {
+    imgURL: BookOpenIcon,
+    route: "/profiles",
+    label: "My Ads",
+    value: "ads",
+  },
+  {
+    imgURL: HeartIcon,
+    route: "/profiles/wishlist",
+    label: "Wishlist",
+    value: "wishlist",
+  },
+  {
+    imgURL: Star,
+    route: "/profiles/rating",
+    label: "My Rating",
+    value: "rating",
+  },
+  {
+    imgURL: Users,
+    route: "/profiles/followings",
+    label: "Following",
+    value: "followings",
+  },
+];

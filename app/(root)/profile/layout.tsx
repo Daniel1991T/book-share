@@ -1,4 +1,5 @@
 import ProfileTabs from "@/components/ProfileTabs";
+import { profileLinks } from "@/constants";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (

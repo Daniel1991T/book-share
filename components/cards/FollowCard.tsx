@@ -31,7 +31,7 @@ const FollowCard = ({ follow, isFollowing = true }: FollowCardProps) => {
         </p>
         <FollowUnFollow
           follow_user_id={JSON.stringify(follow._id)}
-          isFollowing={isFollowing}
+          initialIsFollowing={isFollowing}
         />
       </div>
       <div className="w-full md:flex flex-1 h-36 px-2 hidden">

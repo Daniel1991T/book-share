@@ -4,11 +4,11 @@ import { MapPin } from "lucide-react";
 import Image from "next/image";
 import PlainStarRating from "./PlainStarRating";
 import FollowUnFollow from "./shared/FollowUnFollow";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { TUser } from "@/database/user.model";
+import { spinner } from "@/app/assets/icons";
 
 const UserDetails = () => {
   const param = useParams();
@@ -23,28 +23,30 @@ const UserDetails = () => {
     isFollowing: boolean;
   } | null>(null);
 
+  const fetchUserDetails = useCallback(async (clerk_id: string) => {
+    setIsLoading(true);
+    try {
+      const { user, imageUrl, numOfListing, isFollowing } = await getUserDetail(
+        clerk_id
+      );
+      setState({
+        user,
+        imageUrl,
+        numOfListing,
+        isFollowing: isFollowing ? isFollowing : false,
+      });
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchUserDetails = async (clerk_id: string) => {
-      setIsLoading(true);
-      try {
-        const { user, imageUrl, numOfListing, isFollowing } =
-          await getUserDetail(clerk_id);
-        setState({
-          user,
-          imageUrl,
-          numOfListing,
-          isFollowing: isFollowing ? isFollowing : false,
-        });
-      } catch (error: any) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     if (param.id) {
       fetchUserDetails(param?.id as string);
     }
-  }, [param]);
+  }, [param.id, fetchUserDetails]);
 
   if (!user) {
     return null;
@@ -52,9 +54,9 @@ const UserDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center">
+      <div className="flex h-48 justify-center">
         <Image
-          src="../assets/icons/spinner.svg"
+          src={spinner}
           alt="spinner"
           width={56}
           height={56}
@@ -65,7 +67,7 @@ const UserDetails = () => {
   }
 
   return (
-    <div className="flex p-4 items-center justify-center h-56">
+    <div className="flex p-4 items-center justify-center h-48">
       <Image
         className="rounded-full h-20"
         width={80}
@@ -93,7 +95,9 @@ const UserDetails = () => {
           {user?.id !== state?.user.clerkId && (
             <FollowUnFollow
               follow_user_id={JSON.stringify(state?.user._id)}
-              isFollowing={state?.isFollowing ? state?.isFollowing : false}
+              initialIsFollowing={
+                state?.isFollowing ? state?.isFollowing : false
+              }
             />
           )}
         </div>
