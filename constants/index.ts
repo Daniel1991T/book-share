@@ -82,7 +82,7 @@ export const profilesLink: ProfileLink[] = [
   {
     imgURL: Star,
     route: "/profiles/rating",
-    label: "My Rating",
+    label: "Rating",
     value: "rating",
   },
   {

@@ -4,13 +4,11 @@ import { profilesLink } from "@/constants";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { TabsContent } from "@radix-ui/react-tabs";
 import { extractDynamicSection, extractUserId } from "@/lib/utils";
 
 const ProfilesTabs = () => {
   const pathname = usePathname();
   const [path, setPathname] = useState(pathname.split("/")[2] || "ads");
-  console.log("path", path, pathname);
 
   useEffect(() => {
     setPathname(extractDynamicSection(pathname));

@@ -65,6 +65,12 @@ export const extractUserId = (url: string): string | null => {
   return match ? match[0] : null;
 };
 
+/**
+ * Extracts and returns the profile feature based on the URL.
+ * @param url - The URL string indicating the user profile feature.
+ * @returns The name of the profile feature.
+ */
+
 export const extractDynamicSection = (url: string): string => {
   const regex = /\/profiles\/([^\/]+)\/user_/;
   const match = url.match(regex);

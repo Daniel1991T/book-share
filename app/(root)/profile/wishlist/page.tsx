@@ -1,4 +1,3 @@
-import ListingBook from "@/components/MyListingBook";
 import { getUserWishlist } from "@/lib/actions/listing.actions";
 import { auth } from "@clerk/nextjs";
 import Image from "next/image";

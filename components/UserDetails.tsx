@@ -14,7 +14,6 @@ const UserDetails = () => {
   const param = useParams();
   const { user } = useUser();
 
-  console.log(param);
   const [isLoading, setIsLoading] = useState(true);
   const [state, setState] = useState<{
     user: TUser;
@@ -47,10 +46,6 @@ const UserDetails = () => {
       fetchUserDetails(param?.id as string);
     }
   }, [param.id, fetchUserDetails]);
-
-  if (!user) {
-    return null;
-  }
 
   if (isLoading) {
     return (

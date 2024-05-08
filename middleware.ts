@@ -4,7 +4,15 @@ import { authMiddleware } from "@clerk/nextjs";
 // for more information about configuring your Middleware
 
 export default authMiddleware({
-  publicRoutes: ["/", "/api/webhook", "/listing-book/:id", "/profiles/:id"],
+  publicRoutes: [
+    "/",
+    "/api/webhook",
+    "/listing-book/:id",
+    "/profiles/:id",
+    "/profiles/wishlist/:id",
+    "/profiles/rating/:id",
+    "/profiles/followings/:id",
+  ],
   ignoredRoutes: ["/api/webhook"],
 });
 
