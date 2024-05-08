@@ -108,3 +108,9 @@ export type BookSchemaProp =
   | "isFree"
   | "price"
   | "cover_url";
+
+export const RatingSchema = z.object({
+  rating: z.number().min(1).max(5).nonnegative(),
+  comment: z.string().min(5).max(255),
+  forUserClerkId: z.string().min(5).max(255),
+});

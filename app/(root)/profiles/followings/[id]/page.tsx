@@ -2,7 +2,7 @@ import MaxWidthWrapper from "@/components/shared/MaxWithWrapper";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ParamsProps } from "@/types";
 import FollowingTab from "./FollowingsTab";
-import FollowersTab from "./FollwersTab";
+import FollowersTab from "./FollowersTab";
 
 export default async function FollowingPage({ params }: ParamsProps) {
   return (
@@ -10,7 +10,7 @@ export default async function FollowingPage({ params }: ParamsProps) {
       <Tabs defaultValue="followings" className="w-full bg-transparent">
         <TabsList className="bg-transparent gap-4 w-full flex justify-start">
           <TabsTrigger
-            className="border-2 rounded-full data-[state=active]:bg-como_v-50 
+            className="border-2 rounded-full transition-all duration-500 ease-linear data-[state=active]:bg-como_v-50 
                  data-[state=active]:border-como 
                w-auto  gap-2 data-[state=active]:text-como data-[state=active]:font-bold
               stroke-1 !data-[state=active]:stroke-2"
@@ -19,7 +19,7 @@ export default async function FollowingPage({ params }: ParamsProps) {
             Followings
           </TabsTrigger>
           <TabsTrigger
-            className="border-2 rounded-full data-[state=active]:bg-como_v-50 
+            className="border-2 rounded-full transition-all duration-500 ease-linear data-[state=active]:bg-como_v-50 
                  data-[state=active]:border-como 
                w-auto  gap-2 data-[state=active]:text-como data-[state=active]:font-bold
               stroke-1 !data-[state=active]:stroke-2"

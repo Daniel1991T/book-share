@@ -1,20 +1,26 @@
 "use client";
 import { getUserDetail } from "@/lib/actions/user.actions";
-import { MapPin } from "lucide-react";
+import { MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import PlainStarRating from "./PlainStarRating";
 import FollowUnFollow from "./shared/FollowUnFollow";
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { TUser } from "@/database/user.model";
 import { spinner } from "@/app/assets/icons";
+import { extractDynamicSection } from "@/lib/utils";
+import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import { RatingForm } from "./form/RatingForm";
 
 const UserDetails = () => {
   const param = useParams();
+  const pathname = usePathname();
   const { user } = useUser();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState<{
     user: TUser;
     imageUrl: string;
@@ -97,6 +103,29 @@ const UserDetails = () => {
           )}
         </div>
       </div>
+      {extractDynamicSection(pathname) === "rating" && (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogTrigger asChild>
+            <Button
+              onClick={() => setIsOpen(true)}
+              variant="outline"
+              className="outline-como transition-colors duration-200 ease-in-out hover:text-white hover:bg-como rounded-full"
+            >
+              Rate Me
+            </Button>
+          </DialogTrigger>
+          {user?.id && (
+            <DialogContent className="sm:max-w-md w-[360px] sm:w-[28rem]">
+              <div className="flex items-center space-x-2">
+                <RatingForm
+                  clerkUserId={param.id as string}
+                  authClerkId={user?.id}
+                />
+              </div>
+            </DialogContent>
+          )}
+        </Dialog>
+      )}
     </div>
   );
 };

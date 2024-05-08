@@ -1,18 +1,22 @@
 import { Document, Schema, model, models } from "mongoose";
 
 export type TReview = {
-  authorId: Schema.Types.ObjectId;
-  forUserId: Schema.Types.ObjectId;
-  review: string;
-  rate: string;
+  authorMongoUserId: Schema.Types.ObjectId;
+  forUserClerkId: string;
+  comment: string;
+  rating: string;
   postedAt: Date;
 } & Document;
 
 const ReviewSchema = new Schema<TReview>({
-  authorId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  forUserId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  review: { type: String, required: true },
-  rate: { type: String, required: true },
+  authorMongoUserId: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  forUserClerkId: { type: String, required: true },
+  comment: { type: String, required: true },
+  rating: { type: String, required: true },
   postedAt: { type: Date, default: Date.now },
 });
 

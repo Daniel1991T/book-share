@@ -28,7 +28,7 @@ const ProfilesTabs = () => {
                 value={link.value}
                 className="data-[state=active]:border-b-2 data-[state=active]:border-como 
               rounded-none w-auto md:w-44 gap-2 data-[state=active]:text-como data-[state=active]:font-bold
-              stroke-1 !data-[state=active]:stroke-2"
+              stroke-1 !data-[state=active]:stroke-2 transition-all duration-300 ease-linear"
               >
                 <link.imgURL />
                 <p className="hidden sm:inline-block">{link.label}</p>
