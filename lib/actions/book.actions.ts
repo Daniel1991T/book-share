@@ -1,7 +1,7 @@
 "use server";
 import BookCollections, { TBook } from "@/database/book.model";
 import { connectToDB } from "../mongodb";
-import { BookType, GenderBook } from "../validations";
+import { BookType } from "../validations";
 import { v2 as cloudinary } from "cloudinary";
 import { auth } from "@clerk/nextjs/server";
 import ListingBooks from "@/database/listing.model";
@@ -9,7 +9,6 @@ import { GetBooksParams, GetListingBooksParams } from "./shared.types";
 import { FilterQuery } from "mongoose";
 import { revalidatePath } from "next/cache";
 import { GENDER_BOOK_FILTER } from "@/constants/filter";
-import { ListingBooksType } from "@/types";
 import { env } from "@/env";
 
 export const addBookToDB = async (book: BookType, book_id: string | null) => {

@@ -14,7 +14,6 @@ import { convertBase64 } from "../utils";
 import ListingBooks from "@/database/listing.model";
 import { BOOKS_COLLECTIONS_MODEL_MONGODB } from "@/database/book.model";
 import { FollowResponseType } from "@/types";
-import { log } from "console";
 
 export const createUser = async (userData: CreateUserParams) => {
   try {

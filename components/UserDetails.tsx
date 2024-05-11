@@ -13,6 +13,7 @@ import { extractDynamicSection } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { RatingForm } from "./form/RatingForm";
+import { toast } from "./ui/use-toast";
 
 const UserDetails = () => {
   const param = useParams();
@@ -52,6 +53,22 @@ const UserDetails = () => {
       fetchUserDetails(param?.id as string);
     }
   }, [param.id, fetchUserDetails]);
+
+  const handleModalOpen = () => {
+    if (!user?.id) {
+      toast({
+        title: "You need to login to rate this user",
+        description: "Please login to rate this user",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsOpen(!isOpen);
+  };
+
+  const handleCloseDialog = () => {
+    setIsOpen(false);
+  };
 
   if (isLoading) {
     return (
@@ -104,7 +121,7 @@ const UserDetails = () => {
         </div>
       </div>
       {extractDynamicSection(pathname) === "rating" && (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog open={isOpen} onOpenChange={handleModalOpen}>
           <DialogTrigger asChild>
             <Button
               onClick={() => setIsOpen(true)}
@@ -120,6 +137,7 @@ const UserDetails = () => {
                 <RatingForm
                   clerkUserId={param.id as string}
                   authClerkId={user?.id}
+                  closeDialog={handleCloseDialog}
                 />
               </div>
             </DialogContent>

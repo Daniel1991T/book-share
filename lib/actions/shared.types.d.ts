@@ -55,3 +55,25 @@ export type ListingBooksByUserIdParams = {
   page?: number;
   pageSize?: number;
 };
+
+export type TReviewModel = {
+  authorMongoUserId: Schema.Types.ObjectId;
+  forUserClerkId: string;
+  comment: string;
+  rating: number;
+  postedAt: Date;
+};
+
+export type TReviewUser = {
+  _id: string;
+  authorMongoUserId: {
+    clerkId: string;
+    name: string;
+    surname: string;
+    picture: string;
+  };
+  forUserClerkId: string;
+  comment: string;
+  rating: number;
+  postedAt: string;
+};

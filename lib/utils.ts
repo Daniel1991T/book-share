@@ -76,3 +76,39 @@ export const extractDynamicSection = (url: string): string => {
   const match = url.match(regex);
   return match ? match[1] : "ads";
 };
+
+/**
+ * Converts a date string to a readable relative time format (e.g., "1 day ago").
+ * @param dateString - The input date string.
+ * @returns A string representing how long ago the date was, in readable form.
+ */
+export const timeAgo = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const seconds = Math.round((now.getTime() - date.getTime()) / 1000);
+  const minutes = Math.round(seconds / 60);
+  const hours = Math.round(minutes / 60);
+  const days = Math.round(hours / 24);
+
+  if (seconds < 60) {
+    return "just now";
+  } else if (minutes < 60) {
+    return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+  } else if (hours < 24) {
+    return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+  } else {
+    return `${days} day${days > 1 ? "s" : ""} ago`;
+  }
+};
+
+import { formatDistanceToNow } from "date-fns";
+
+/**
+ * Converts an ISO date string to a relative time string.
+ * @param isoDateString - The ISO date string to convert.
+ * @returns A string representing the time since the date.
+ */
+export const formatIsoDateToRelative = (isoDateString: string): string => {
+  const date = new Date(isoDateString);
+  return formatDistanceToNow(date, { addSuffix: true });
+};

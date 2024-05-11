@@ -18,14 +18,15 @@ const PlainStarRating = ({
             <input
               type="radio"
               name="rate"
+              disabled
               id={`star-${uniqueName}${ratingValue}`}
               value={ratingValue}
               defaultChecked={rate === ratingValue}
-              className="form-radio h-5 w-5"
+              className="form-radio h-4 w-4"
             />
             <label
               htmlFor={`star-${uniqueName}${ratingValue}`}
-              className={`text-3xl ${
+              className={`text-2xl ${
                 rate >= ratingValue ? "!text-[#ffa723]" : "text-gray-300"
               }`}
               title={`${ratingValue} stars`}

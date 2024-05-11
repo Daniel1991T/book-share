@@ -1,35 +1,32 @@
 import Image from "next/image";
 import { Card } from "../ui/card";
-import RatingComponent from "../Rating";
-import { auth } from "@clerk/nextjs";
-import StarRating from "../StarRating";
 import PlainStarRating from "../PlainStarRating";
+import console from "console";
+import { TReviewUser } from "@/lib/actions/shared.types";
+import { timeAgo } from "@/lib/utils";
 
 type ReviewCardProps = {
-  imageAvatar: string;
-  fullName: string;
-  posteAt: string;
-  review: string;
-  reviewRate: number;
+  reviewItem: TReviewUser;
 };
 
-const AVATAR_PLACEHOLDER =
-  "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvdXBsb2FkZWQvaW1nXzJleTZiTmk4VTRpa0dWWERDY2lheU0xTzZXRSJ9";
+const AVATAR_PLACEHOLDER = "https://avatar.iran.liara.run/public/boy";
 
-const ReviewCard = ({
-  fullName,
-  imageAvatar,
-  posteAt,
-  review,
-  reviewRate,
-}: ReviewCardProps) => {
+const ReviewCard = ({ reviewItem }: ReviewCardProps) => {
+  const { _id, comment, rating, authorMongoUserId, forUserClerkId, postedAt } =
+    reviewItem;
+  const fullName = `${authorMongoUserId.name} ${authorMongoUserId.surname}`;
+
   return (
-    <Card>
-      <div className="flex items-center space-x-4 px-2 py-4">
+    <Card className="border-0">
+      <div className="flex items-start space-x-4 px-2 py-4">
         <div className="w-20 h-20 mr-3 rounded-full overflow-hidden">
           <Image
-            src={AVATAR_PLACEHOLDER}
-            alt={fullName}
+            src={
+              authorMongoUserId.picture
+                ? authorMongoUserId.picture
+                : AVATAR_PLACEHOLDER
+            }
+            alt={`${fullName} avatar`}
             width={56}
             height={56}
           />
@@ -37,10 +34,10 @@ const ReviewCard = ({
         <div className="flex flex-col w-full">
           <div className="flex justify-between w-full">
             <h3 className="text-lg font-bold">{fullName}</h3>
-            <p className="text-sm text-gray-400">{posteAt}</p>
+            <p className="text-sm text-gray-400">{timeAgo(postedAt)}</p>
           </div>
-          <PlainStarRating rate={4} uniqueId="card-rating-star" />
-          <p className="mt-4 text-gray-600">{review}</p>
+          <PlainStarRating rate={rating} uniqueId={JSON.stringify(_id)} />
+          <p className="mt-4 text-gray-600">{comment}</p>
         </div>
       </div>
     </Card>

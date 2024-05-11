@@ -16,15 +16,18 @@ import {
 import { RatingSchema } from "@/lib/validations";
 import { Textarea } from "../ui/textarea";
 import StarRating from "../StarRating";
-import { useEffect, useState } from "react";
+import { createCommentTo } from "@/lib/actions/rating.actions";
+import { usePathname } from "next/navigation";
 
 type RatingFormProps = {
   clerkUserId: string;
   authClerkId: string;
+  closeDialog: () => void;
 };
 
-export function RatingForm({ clerkUserId }: RatingFormProps) {
+export function RatingForm({ clerkUserId, closeDialog }: RatingFormProps) {
   // 1. Define your form.
+  const pathname = usePathname();
 
   const form = useForm<z.infer<typeof RatingSchema>>({
     resolver: zodResolver(RatingSchema),
@@ -36,10 +39,17 @@ export function RatingForm({ clerkUserId }: RatingFormProps) {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof RatingSchema>) {
+  async function onSubmit(values: z.infer<typeof RatingSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+    try {
+      await createCommentTo(values, pathname);
+      closeDialog();
+    } catch (error: any) {
+      console.log(error);
+      throw new Error("Create user fail", error);
+    }
   }
   // ...
 
