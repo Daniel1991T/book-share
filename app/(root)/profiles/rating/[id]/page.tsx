@@ -6,7 +6,6 @@ import { ParamsProps } from "@/types";
 
 export default async function RatingPage({ params }: ParamsProps) {
   const reviews = await getReviewOfUserClerkId(params.id);
-  console.log("review", reviews);
   return (
     <MaxWidthWrapper>
       <div className="space-y-4 max-w-2xl mx-auto  md:px-0">

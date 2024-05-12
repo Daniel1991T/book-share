@@ -35,6 +35,8 @@ const UserDetails = () => {
       const { user, imageUrl, numOfListing, isFollowing } = await getUserDetail(
         clerk_id
       );
+      console.log("user", user);
+
       setState({
         user,
         imageUrl,
@@ -101,50 +103,56 @@ const UserDetails = () => {
           <MapPin /> <span>{state?.user.city},</span>{" "}
           <span>{state?.user.country}</span>
         </p>
-        <PlainStarRating
-          rate={state?.user?.rating ? state?.user?.rating : 0}
-          uniqueId="book-user-star"
-        />
+        <div className="flex items-center justify-start">
+          <PlainStarRating
+            rate={state?.user?.rating ? state?.user?.rating : 0}
+            uniqueId="book-user-star"
+          />
+          <p className="text-2xl text-como mt-1 font-bold">
+            {state?.user.rating?.toPrecision(2)}
+          </p>
+        </div>
         <p className="text-sm space-x-2 text-como">
           Other book: <span>{state?.numOfListing}</span>
         </p>
-
-        <div className="w-56">
-          {user?.id !== state?.user.clerkId && (
-            <FollowUnFollow
-              follow_user_id={JSON.stringify(state?.user._id)}
-              initialIsFollowing={
-                state?.isFollowing ? state?.isFollowing : false
-              }
-            />
-          )}
+        <div className="flex flex-col md:flex-row gap-2 md:gap-4">
+          <div className="w-56">
+            {user?.id !== state?.user.clerkId && (
+              <FollowUnFollow
+                follow_user_id={JSON.stringify(state?.user._id)}
+                initialIsFollowing={
+                  state?.isFollowing ? state?.isFollowing : false
+                }
+              />
+            )}
+          </div>
+          {extractDynamicSection(pathname) === "rating" &&
+            user?.id !== param.id && (
+              <Dialog open={isOpen} onOpenChange={handleModalOpen}>
+                <DialogTrigger asChild>
+                  <Button
+                    onClick={() => setIsOpen(true)}
+                    variant="outline"
+                    className="outline-como w-56 transition-colors duration-200 ease-in-out hover:text-white hover:bg-como rounded-full"
+                  >
+                    Rate Me
+                  </Button>
+                </DialogTrigger>
+                {user?.id && (
+                  <DialogContent className="sm:max-w-md px-2 w-[320px] rounded-lg sm:w-[28rem]">
+                    <div className="flex items-center space-x-2">
+                      <RatingForm
+                        clerkUserId={param.id as string}
+                        authClerkId={user?.id}
+                        closeDialog={handleCloseDialog}
+                      />
+                    </div>
+                  </DialogContent>
+                )}
+              </Dialog>
+            )}
         </div>
       </div>
-      {extractDynamicSection(pathname) === "rating" &&
-        user?.id !== param.id && (
-          <Dialog open={isOpen} onOpenChange={handleModalOpen}>
-            <DialogTrigger asChild>
-              <Button
-                onClick={() => setIsOpen(true)}
-                variant="outline"
-                className="outline-como transition-colors duration-200 ease-in-out hover:text-white hover:bg-como rounded-full"
-              >
-                Rate Me
-              </Button>
-            </DialogTrigger>
-            {user?.id && (
-              <DialogContent className="sm:max-w-md w-[360px] sm:w-[28rem]">
-                <div className="flex items-center space-x-2">
-                  <RatingForm
-                    clerkUserId={param.id as string}
-                    authClerkId={user?.id}
-                    closeDialog={handleCloseDialog}
-                  />
-                </div>
-              </DialogContent>
-            )}
-          </Dialog>
-        )}
     </div>
   );
 };
