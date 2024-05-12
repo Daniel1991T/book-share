@@ -19,6 +19,9 @@ export const createCommentTo = async (comment: unknown, path: string) => {
     if (!userId) {
       throw new Error("You need to login to rate this user");
     }
+    if (parseData.data.forUserClerkId === userId) {
+      throw new Error("You can't rate yourself");
+    }
     const mongoUser: TUser = await getUserByClerkId(userId);
     const newReview: TReviewModel = {
       authorMongoUserId: mongoUser._id,

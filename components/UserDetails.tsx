@@ -120,30 +120,31 @@ const UserDetails = () => {
           )}
         </div>
       </div>
-      {extractDynamicSection(pathname) === "rating" && (
-        <Dialog open={isOpen} onOpenChange={handleModalOpen}>
-          <DialogTrigger asChild>
-            <Button
-              onClick={() => setIsOpen(true)}
-              variant="outline"
-              className="outline-como transition-colors duration-200 ease-in-out hover:text-white hover:bg-como rounded-full"
-            >
-              Rate Me
-            </Button>
-          </DialogTrigger>
-          {user?.id && (
-            <DialogContent className="sm:max-w-md w-[360px] sm:w-[28rem]">
-              <div className="flex items-center space-x-2">
-                <RatingForm
-                  clerkUserId={param.id as string}
-                  authClerkId={user?.id}
-                  closeDialog={handleCloseDialog}
-                />
-              </div>
-            </DialogContent>
-          )}
-        </Dialog>
-      )}
+      {extractDynamicSection(pathname) === "rating" &&
+        user?.id !== param.id && (
+          <Dialog open={isOpen} onOpenChange={handleModalOpen}>
+            <DialogTrigger asChild>
+              <Button
+                onClick={() => setIsOpen(true)}
+                variant="outline"
+                className="outline-como transition-colors duration-200 ease-in-out hover:text-white hover:bg-como rounded-full"
+              >
+                Rate Me
+              </Button>
+            </DialogTrigger>
+            {user?.id && (
+              <DialogContent className="sm:max-w-md w-[360px] sm:w-[28rem]">
+                <div className="flex items-center space-x-2">
+                  <RatingForm
+                    clerkUserId={param.id as string}
+                    authClerkId={user?.id}
+                    closeDialog={handleCloseDialog}
+                  />
+                </div>
+              </DialogContent>
+            )}
+          </Dialog>
+        )}
     </div>
   );
 };

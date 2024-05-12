@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { Card } from "../ui/card";
 import PlainStarRating from "../PlainStarRating";
-import console from "console";
 import { TReviewUser } from "@/lib/actions/shared.types";
 import { timeAgo } from "@/lib/utils";
+import Link from "next/link";
 
 type ReviewCardProps = {
   reviewItem: TReviewUser;
@@ -33,7 +33,11 @@ const ReviewCard = ({ reviewItem }: ReviewCardProps) => {
         </div>
         <div className="flex flex-col w-full">
           <div className="flex justify-between w-full">
-            <h3 className="text-lg font-bold">{fullName}</h3>
+            <Link href={`/profiles/rating/${authorMongoUserId.clerkId}`}>
+              <h3 className="text-lg font-bold hover:scale-105 transition-all duration-300 ease-in-out">
+                {fullName}
+              </h3>
+            </Link>
             <p className="text-sm text-gray-400">{timeAgo(postedAt)}</p>
           </div>
           <PlainStarRating rate={rating} uniqueId={JSON.stringify(_id)} />
