@@ -1,15 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import DescriptionText from "@/components/DescriptionText";
+import ContactButton from "@/components/ContactButton";
 import ExpandableText from "@/components/ExpandableText";
 import UserDetail from "@/components/UserDetail";
 import AddToWishlist from "@/components/shared/AddToWishlist";
-import { Button } from "@/components/ui/button";
 import { TUser } from "@/database/user.model";
 import { getListingBookById } from "@/lib/actions/listing.actions";
 import { getUserByClerkId } from "@/lib/actions/user.actions";
 import { ParamsProps } from "@/types";
 import { auth } from "@clerk/nextjs";
-import { log } from "console";
 import { ObjectId } from "mongoose";
 import Link from "next/link";
 
@@ -73,12 +71,14 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
                 <p className="py-4 text-como">Free</p>
               )}
             </div>
-            {listingBook.clerk_id !== clerkId && (
+            {listingBook.clerk_id !== clerkId && clerkId && (
               <div className="flex w-full items-center justify-center gap-2 px-4">
                 <Link href="#" className="w-full">
-                  <Button className="bg-como w-full rounded-full text-white">
-                    contact
-                  </Button>
+                  <ContactButton
+                    otherUserId={listingBook.clerk_id}
+                    roomImage={listingBook.book_id.cover_url[0]}
+                    roomName={listingBook.book_id.title}
+                  />
                 </Link>
 
                 <AddToWishlist

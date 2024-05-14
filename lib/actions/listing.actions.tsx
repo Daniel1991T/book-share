@@ -137,11 +137,12 @@ export const getListingBookById = async (id: string) => {
     if (!listingBook) throw new Error("Listing book not found!");
     const user = await getUserByClerkId(listingBook.clerk_id);
     if (!user) throw new Error("User not found!");
-    const userAvatar = await clerkClient.users.getUser(listingBook.clerk_id);
+    const userAvatar = (await clerkClient.users.getUser(listingBook.clerk_id))
+      .imageUrl;
     return {
       listingBook: listingBook as ListingBooksType,
       user: user,
-      imageUrl: userAvatar.imageUrl,
+      imageUrl: userAvatar,
     };
   } catch (error: any) {
     console.error(`Failed to get listing book by id: ${error.message}`);

@@ -87,7 +87,7 @@ const UserDetails = () => {
   }
 
   return (
-    <div className="flex p-4 items-center justify-center h-48">
+    <div className="flex p-4 items-start h-56 justify-center md:h-48">
       <Image
         className="rounded-full h-20"
         width={80}

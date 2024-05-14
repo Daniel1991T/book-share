@@ -47,3 +47,12 @@ export type FirstListingBook = {
   book_id: Pick<BookType, "title" | "cover_url">;
   listed_at: Date;
 };
+
+export type TRoomChanel = {
+  roomImage: string;
+  userAvatar: string;
+  userFullName: string;
+  bookName: string;
+  lastMessage: string;
+  lastSeen: string;
+};

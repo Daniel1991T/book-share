@@ -100,4 +100,5 @@ export enum FILTER_URL_PARAMS {
   GENDER = "gender",
   PAGE = "page",
   PROFILE = "profile",
+  ROOM = "room-query",
 }
