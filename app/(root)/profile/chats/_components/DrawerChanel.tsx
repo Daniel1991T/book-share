@@ -26,11 +26,7 @@ export default function DrawerChanel({ children }: DrawerChannelProps) {
   }, [searchParams, router]);
 
   return (
-    <Drawer
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      className="flex items-center justify-center"
-    >
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger className="w-full items-center justify-center flex translate-y-5">
         See more chats
       </DrawerTrigger>
