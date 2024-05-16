@@ -14,6 +14,8 @@ import { convertBase64 } from "../utils";
 import ListingBooks from "@/database/listing.model";
 import { BOOKS_COLLECTIONS_MODEL_MONGODB } from "@/database/book.model";
 import { FollowResponseType } from "@/types";
+import { StreamChat } from "stream-chat";
+import { env } from "@/env";
 
 export const createUser = async (userData: CreateUserParams) => {
   try {
@@ -132,6 +134,18 @@ export const updateUser = async ({
   try {
     connectToDB();
     await User.findOneAndUpdate({ clerkId }, updateData, { new: true });
+    const serverClient = StreamChat.getInstance(
+      env.NEXT_PUBLIC_STREAM_API_KEY,
+      env.STREAM_API_SECRET
+    );
+    const userUpdate = await serverClient.partialUpdateUser({
+      id: clerkId,
+      set: {
+        name: updateData.name + " " + updateData.surname,
+      },
+    });
+    console.log("userUpdate", userUpdate);
+
     revalidatePath(path);
     revalidatePath("/");
   } catch (error) {
