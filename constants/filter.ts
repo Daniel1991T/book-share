@@ -101,4 +101,5 @@ export enum FILTER_URL_PARAMS {
   PAGE = "page",
   PROFILE = "profile",
   ROOM = "room-query",
+  DRAWER = "drawer",
 }

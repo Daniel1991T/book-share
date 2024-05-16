@@ -1,6 +1,6 @@
 "use client";
 import MaxWidthWrapper from "@/components/shared/MaxWithWrapper";
-import { ParamsProps, SearchParamsProps, TRoomChanel } from "@/types";
+import { SearchParamsProps } from "@/types";
 import {
   Channel,
   ChannelList,
@@ -11,6 +11,7 @@ import {
 import { useAuth } from "@clerk/nextjs";
 import useChatClient from "@/lib/hook/useChatClient";
 import RoomPreview from "./_components/RoomPreview";
+import DrawerChanel from "./_components/DrawerChanel";
 
 const Chats = ({ searchParams }: SearchParamsProps) => {
   const { userId } = useAuth();
@@ -32,13 +33,12 @@ const Chats = ({ searchParams }: SearchParamsProps) => {
 
   return (
     <Chat client={client}>
-      <MaxWidthWrapper className="border-2 px-0 flex border-alto rounded-3xl  h-[calc(100vh-12rem)]">
+      <MaxWidthWrapper className="border-2 px-0 flex border-alto rounded-3xl flex-col md:flex-row  h-[calc(100vh-12rem)]">
         <div className="w-fit border-r-2 h-full overflow-hidden hidden md:flex rounded-l-3xl">
           {/* <SearchRoom
             placeholder="Search Room"
             route={`/profiles/chat/${params.id}`}
           /> */}
-
           <ChannelList
             showChannelSearch
             filters={filters}
@@ -47,15 +47,26 @@ const Chats = ({ searchParams }: SearchParamsProps) => {
             Preview={RoomPreview}
           />
         </div>
-        <div className="flex-1 py-4 px-2 flex flex-col">
+        <div className="flex-1 py-4 px-2 flex flex-col overflow-hidden">
           <Channel>
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col w-full overflow-hidden">
               <MessageList />
               <MessageInput noFiles />
             </div>
           </Channel>
         </div>
       </MaxWidthWrapper>
+      <div className="md:hidden w-full">
+        <DrawerChanel>
+          <ChannelList
+            showChannelSearch
+            filters={filters}
+            sort={{ last_message_at: -1 }}
+            options={{ state: true, presence: true, limit: 10 }}
+            Preview={RoomPreview}
+          />
+        </DrawerChanel>
+      </div>
     </Chat>
   );
 };

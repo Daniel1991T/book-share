@@ -1,7 +1,9 @@
-import { timeAgo } from "@/lib/utils";
+import { FILTER_URL_PARAMS } from "@/constants/filter";
+import { formUrlQuery, timeAgo } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { Circle } from "lucide-react";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRef } from "react";
 import {
   ChannelPreviewUIComponentProps,
@@ -17,18 +19,28 @@ export default function RoomPreview<
     displayImage,
     displayTitle,
     latestMessage,
-
     onSelect: customOnSelectChannel,
     setActiveChannel,
     watchers,
   } = props;
   const { user } = useUser();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const otherUser = Object.values(channel?.state?.members ?? {}).filter(
     (val) => val.user_id !== user?.id
   )[0];
 
   const channelPreviewButton = useRef<HTMLButtonElement | null>(null);
+
+  const handleUpdateParams = () => {
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: FILTER_URL_PARAMS.DRAWER,
+      value: "false",
+    });
+    router.push(newUrl, { scroll: false });
+  };
 
   const onSelectChannel = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (customOnSelectChannel) {
@@ -39,6 +51,7 @@ export default function RoomPreview<
     if (channelPreviewButton?.current) {
       channelPreviewButton.current.blur();
     }
+    handleUpdateParams();
   };
 
   return (
