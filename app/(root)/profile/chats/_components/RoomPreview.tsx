@@ -1,46 +1,102 @@
-import { TRoomChanel } from "@/types";
+import { timeAgo } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
+import { Circle } from "lucide-react";
 import Image from "next/image";
+import { useRef } from "react";
+import {
+  ChannelPreviewUIComponentProps,
+  DefaultStreamChatGenerics,
+} from "stream-chat-react";
 
-type RoomPreviewProps = {
-  isActive: boolean;
-  roomChanelDetails: TRoomChanel;
-};
+export default function RoomPreview<
+  StreamChatGenerics extends DefaultStreamChatGenerics = DefaultStreamChatGenerics
+>(props: ChannelPreviewUIComponentProps<DefaultStreamChatGenerics>) {
+  const {
+    active,
+    channel,
+    displayImage,
+    displayTitle,
+    latestMessage,
 
-export default function RoomPreview({
-  isActive,
-  roomChanelDetails: {
-    roomImage,
-    userAvatar,
-    userFullName,
-    bookName,
-    lastMessage,
-    lastSeen,
-  },
-}: RoomPreviewProps) {
+    onSelect: customOnSelectChannel,
+    setActiveChannel,
+    watchers,
+  } = props;
+  const { user } = useUser();
+
+  const otherUser = Object.values(channel?.state?.members ?? {}).filter(
+    (val) => val.user_id !== user?.id
+  )[0];
+
+  const channelPreviewButton = useRef<HTMLButtonElement | null>(null);
+
+  const onSelectChannel = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (customOnSelectChannel) {
+      customOnSelectChannel(e);
+    } else if (setActiveChannel) {
+      setActiveChannel(channel, watchers);
+    }
+    if (channelPreviewButton?.current) {
+      channelPreviewButton.current.blur();
+    }
+  };
+
   return (
-    <li className={`${isActive && "bg-como_v-100"} flex w-full`}>
+    <button
+      aria-label={`Select Channel: ${displayTitle || ""}`}
+      aria-selected={active}
+      role="option"
+      data-testid="channel-preview-button"
+      onClick={onSelectChannel}
+      ref={channelPreviewButton}
+      className={`flex w-full ${active && "bg-como_v-100"}`}
+    >
       <div className="relative w-24 h-full p-1">
         <Image
-          src={roomImage}
+          src={(channel?.data?.roomImage as string) ?? displayImage}
           alt="room-image"
           width={80}
           height={80}
           className="h-full object-cover rounded-lg"
         />
-        <div className="flex items-center justify-center size-9 bg-white rounded-full absolute -right-3 bottom-0">
-          <Image src={userAvatar} alt="user-avatar" width={30} height={30} />
+        <div
+          className={`flex items-center justify-center size-9  rounded-full absolute -right-3 bottom-0 ${
+            otherUser.user?.online ? "bg-green-400" : "bg-gray-400"
+          }`}
+        >
+          <Image
+            src={
+              otherUser.user?.image ?? "/assets/images/avatarPlaceholder.png"
+            }
+            alt="user-avatar"
+            width={30}
+            height={30}
+            className="object-cover rounded-full size-8"
+          />
         </div>
       </div>
-      <div className="flex flex-col w-full px-4 justify-between py-2">
+      <div className="flex flex-col w-full px-4 items-start justify-between !h-full py-2">
         <div className="flex justify-between items-center w-full">
-          <p className="font-bold">{userFullName}</p>
-          <p className="text-gunsmoke">{lastSeen}</p>
+          <p className="font-bold">{otherUser.user?.name}</p>
+          {!otherUser.user?.online ? (
+            <p className="text-gunsmoke">
+              {timeAgo(otherUser.user?.last_active ?? "")}
+            </p>
+          ) : (
+            <div className="text-green-400 gap-2 flex items-center justify-center">
+              <div>
+                <Circle className="text-green-400 fill-green-400 size-3 translate-y-[2px]" />
+              </div>
+              <p>online</p>
+            </div>
+          )}
         </div>
-        <h2 className="text-como">Ad: {bookName}</h2>
+
+        <h2 className="text-como">Ad: {displayTitle}</h2>
         <p className="text-gunsmoke overflow-hidden text-ellipsis">
-          {lastMessage}
+          {latestMessage}
         </p>
       </div>
-    </li>
+    </button>
   );
 }

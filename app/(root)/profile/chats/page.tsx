@@ -1,44 +1,62 @@
+"use client";
 import MaxWidthWrapper from "@/components/shared/MaxWithWrapper";
-import SearchRoom from "./_components/SearchRoom";
-import { ParamsProps, TRoomChanel } from "@/types";
+import { ParamsProps, SearchParamsProps, TRoomChanel } from "@/types";
+import {
+  Channel,
+  ChannelList,
+  Chat,
+  MessageInput,
+  MessageList,
+} from "stream-chat-react";
+import { useAuth } from "@clerk/nextjs";
+import useChatClient from "@/lib/hook/useChatClient";
 import RoomPreview from "./_components/RoomPreview";
 
-const items: TRoomChanel[] = [
-  {
-    roomImage:
-      "http://res.cloudinary.com/dunmfhbir/image/upload/v1712841100/vyeebliu5kdx4w5rnq2x.jpg",
-    userAvatar: "/assets/images/avatarPlaceholder.png",
-    userFullName: "John Doe",
-    bookName: "Harry Potter",
-    lastMessage: "Hello",
-    lastSeen: "1 min ago",
-  },
-  {
-    roomImage:
-      "http://res.cloudinary.com/dunmfhbir/image/upload/v1712841100/vyeebliu5kdx4w5rnq2x.jpg",
-    userAvatar: "/assets/images/avatarPlaceholder.png",
-    userFullName: "John Doe",
-    bookName: "Harry Potter",
-    lastMessage: "Hello",
-    lastSeen: "1 min ago",
-  },
-];
+const Chats = ({ searchParams }: SearchParamsProps) => {
+  const { userId } = useAuth();
+  console.log("params", searchParams.room);
 
-const Chats = ({ params }: ParamsProps) => {
+  const filters = searchParams.room
+    ? {
+        type: "messaging",
+        members: { $in: [userId!] },
+        cid: { $eq: searchParams.room ?? "" },
+      }
+    : { type: "messaging", members: { $in: [userId!] } };
+
+  const { client, isLoading } = useChatClient();
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (!client) return <div>no client</div>;
+
   return (
-    <MaxWidthWrapper className="border-2 px-0 flex border-alto rounded-3xl  h-[calc(100vh-12rem)]">
-      <div className="w-80 border-r-2">
-        <SearchRoom
-          placeholder="Search Room"
-          route={`/profiles/chat/${params.id}`}
-        />
-        <ul>
-          <RoomPreview isActive roomChanelDetails={items[0]} />
-          <RoomPreview isActive={false} roomChanelDetails={items[1]} />
-        </ul>
-      </div>
-      <div className="flex-1 py-4 px-2">chat room</div>
-    </MaxWidthWrapper>
+    <Chat client={client}>
+      <MaxWidthWrapper className="border-2 px-0 flex border-alto rounded-3xl  h-[calc(100vh-12rem)]">
+        <div className="w-fit border-r-2 h-full overflow-hidden hidden md:flex rounded-l-3xl">
+          {/* <SearchRoom
+            placeholder="Search Room"
+            route={`/profiles/chat/${params.id}`}
+          /> */}
+
+          <ChannelList
+            showChannelSearch
+            filters={filters}
+            sort={{ last_message_at: -1 }}
+            options={{ state: true, presence: true, limit: 10 }}
+            Preview={RoomPreview}
+          />
+        </div>
+        <div className="flex-1 py-4 px-2 flex flex-col">
+          <Channel>
+            <div className="flex flex-col w-full">
+              <MessageList />
+              <MessageInput noFiles />
+            </div>
+          </Channel>
+        </div>
+      </MaxWidthWrapper>
+    </Chat>
   );
 };
 export default Chats;

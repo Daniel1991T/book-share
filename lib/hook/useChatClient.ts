@@ -1,5 +1,5 @@
 "use client";
-import { StreamChat } from "stream-chat";
+import { ChannelSort, DefaultGenerics, StreamChat } from "stream-chat";
 import { getChannel } from "stream-chat-react";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { env } from "@/env";
 const useChatClient = () => {
   const { isSignedIn, user } = useUser();
   const [client, setClient] = useState<StreamChat | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (isSignedIn && user) {
@@ -19,15 +20,23 @@ const useChatClient = () => {
 
       const connectUser = async () => {
         const token = await getTokenStreamChat();
-
-        await client.connectUser(
-          {
-            id: user.id.toString(),
-            name: user.firstName || "Anonymous",
-            image: user.imageUrl || undefined,
-          },
-          token
-        );
+        if (!token) {
+          throw new Error("Failed to get token");
+        }
+        try {
+          await client.connectUser(
+            {
+              id: user.id.toString(),
+              name: `${user.firstName}  ${user.lastName}` || "Anonymous",
+              image: user.imageUrl || undefined,
+            },
+            token
+          );
+        } catch (error) {
+          console.log("Failed to connect user", error);
+        } finally {
+          setIsLoading(false);
+        }
       };
 
       connectUser().catch(console.error);
@@ -39,6 +48,20 @@ const useChatClient = () => {
       };
     }
   }, [isSignedIn, user]);
+
+  const getChannelList = async (query: string) => {
+    if (!client) return null;
+    const filter = {
+      // members: { $in: [query] },
+      // name: { $autocomplete: query },
+    };
+    const sort: ChannelSort<DefaultGenerics> | undefined = {
+      last_message_at: -1,
+    };
+    const channelList = await getChannel({ client });
+    console.log("channelList", channelList);
+    return channelList;
+  };
 
   // Function to create a channel
   const createChannel = async (
@@ -75,7 +98,7 @@ const useChatClient = () => {
     return channel;
   };
 
-  return { client, createChannel };
+  return { client, isLoading, createChannel, getChannelList };
 };
 
 export default useChatClient;
