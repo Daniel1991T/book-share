@@ -79,7 +79,6 @@ export const toggleFollowUser = async ({
 }: ToggleFollowUserParams) => {
   try {
     connectToDB();
-    console.log("toggleFollowUser");
 
     const { userId } = auth();
     if (!userId) throw new Error("User not found");
@@ -87,17 +86,13 @@ export const toggleFollowUser = async ({
     if (!authUser) throw new Error("Auth user not found");
 
     if (authUser._id === followUserId) throw new Error("Can't follow yourself");
-    console.log("authUser clerk", userId);
-    console.log("auth", authUser);
-    console.log("follow:", followUserId);
+
     const isFollowing = authUser.followUser?.includes(followUserId);
 
     const update = isFollowing
       ? { $pull: { followUser: followUserId } }
       : { $push: { followUser: followUserId } };
     await User.findByIdAndUpdate(authUser._id, update, { new: true });
-
-    console.log("path", path);
 
     revalidatePath(path);
   } catch (error) {
@@ -144,7 +139,6 @@ export const updateUser = async ({
         name: updateData.name + " " + updateData.surname,
       },
     });
-    console.log("userUpdate", userUpdate);
 
     revalidatePath(path);
     revalidatePath("/");

@@ -1,6 +1,7 @@
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { FILTER_URL_PARAMS } from "@/constants/filter";
 import { removeKeysFromQuery } from "@/lib/utils";
+import { ArrowRightToLine } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -26,11 +27,11 @@ export default function DrawerChanel({ children }: DrawerChannelProps) {
   }, [searchParams, router]);
 
   return (
-    <Drawer open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerTrigger className="w-full items-center justify-center flex translate-y-5">
-        See more chats
+    <Drawer open={isOpen} onOpenChange={setIsOpen} direction="left">
+      <DrawerTrigger className="w-full flex -translate-y-5 gap-2">
+        More chats <ArrowRightToLine className="text-como" />
       </DrawerTrigger>
-      <DrawerContent>{children}</DrawerContent>
+      <DrawerContent className="h-[calc(100vh-6rem)]">{children}</DrawerContent>
     </Drawer>
   );
 }

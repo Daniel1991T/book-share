@@ -91,7 +91,7 @@ const Register = ({ closeModal }: RegisterProps) => {
       if (completeSignUp.status !== "complete") {
         // The status can also be `abandoned` or `missing_requirements`
         // Please see https://clerk.com/docs/references/react/use-sign-up#result-status for  more information
-        console.log(JSON.stringify(completeSignUp, null, 2));
+
         if (completeSignUp.status === "abandoned") {
           toast({
             title: "Verification abandoned",

@@ -42,7 +42,7 @@ export function RatingForm({ clerkUserId, closeDialog }: RatingFormProps) {
   async function onSubmit(values: z.infer<typeof RatingSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values);
+
     try {
       await createCommentTo(values, pathname);
       closeDialog();

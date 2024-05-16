@@ -20,7 +20,6 @@ const StarRating = ({ rate, setRate }: StarRatingProps) => {
               value={ratingValue}
               checked={rate === ratingValue}
               onChange={() => {
-                console.log(ratingValue);
                 setRate(ratingValue);
               }}
               className="form-radio h-5 w-5"

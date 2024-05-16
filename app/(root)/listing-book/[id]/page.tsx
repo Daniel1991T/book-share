@@ -29,8 +29,6 @@ const ListingBookPage = async ({ params }: ParamsProps) => {
     mongoUser = await getUserByClerkId(clerkId);
   }
 
-  console.log("listingBook", listingBook);
-
   return (
     <section className="flex mt-16 w-full pt-2 justify-center scroll-smooth flex-col items-center">
       <div className="flex flex-col gap-4 w-full max-w-4xl">

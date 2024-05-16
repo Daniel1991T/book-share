@@ -25,7 +25,6 @@ const UnMemoizedChannelPreviewMessenger = <
     watchers,
     activeChannel,
   } = props;
-  console.log(props);
 
   const channelPreviewButton = useRef<HTMLButtonElement | null>(null);
 

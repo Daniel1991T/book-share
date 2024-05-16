@@ -33,7 +33,7 @@ const useChatClient = () => {
             token
           );
         } catch (error) {
-          console.log("Failed to connect user", error);
+          console.error("Failed to connect user", error);
         } finally {
           setIsLoading(false);
         }
@@ -41,7 +41,6 @@ const useChatClient = () => {
 
       connectUser().catch(console.error);
       setClient(client);
-      console.log("client", client);
 
       return () => {
         client.disconnectUser();
@@ -59,7 +58,6 @@ const useChatClient = () => {
       last_message_at: -1,
     };
     const channelList = await getChannel({ client });
-    console.log("channelList", channelList);
     return channelList;
   };
 
@@ -70,7 +68,6 @@ const useChatClient = () => {
     roomName: string
   ) => {
     if (!client) return null;
-    console.log(user!!.id, otherUserId);
     const existingChannel = await getChannel({
       client,
       type: "messaging",

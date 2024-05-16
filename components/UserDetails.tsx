@@ -35,7 +35,6 @@ const UserDetails = () => {
       const { user, imageUrl, numOfListing, isFollowing } = await getUserDetail(
         clerk_id
       );
-      console.log("user", user);
 
       setState({
         user,

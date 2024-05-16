@@ -73,7 +73,6 @@ export const getListingBookByUserId = async ({
       clerk_id: clerkId,
     });
     const hasNext = totalListingBooks > page * pageSize + listingsBook.length;
-    console.log(totalListingBooks, hasNext, listingsBook);
 
     return {
       listingsBook,
@@ -96,7 +95,6 @@ export const getUserWishlist = async ({
 }) => {
   try {
     connectToDB();
-    console.log("clerk_id", JSON.stringify(clerk_id));
 
     const user = await User.findOne({ clerkId: clerk_id }).populate({
       path: "wishlist",

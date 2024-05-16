@@ -30,7 +30,6 @@ export const createCommentTo = async (comment: unknown, path: string) => {
       rating: parseData.data.rating,
       postedAt: new Date(),
     };
-    console.log("newReview", newReview);
 
     connectToDB();
     const review = await Review.create(newReview);

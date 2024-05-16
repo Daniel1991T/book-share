@@ -33,6 +33,17 @@ const Chats = ({ searchParams }: SearchParamsProps) => {
 
   return (
     <Chat client={client}>
+      <div className="md:hidden w-full">
+        <DrawerChanel>
+          <ChannelList
+            showChannelSearch
+            filters={filters}
+            sort={{ last_message_at: -1 }}
+            options={{ state: true, presence: true, limit: 10 }}
+            Preview={RoomPreview}
+          />
+        </DrawerChanel>
+      </div>
       <MaxWidthWrapper className="border-2 px-0 flex border-alto rounded-3xl flex-col md:flex-row  h-[calc(100vh-12rem)]">
         <div className="w-fit border-r-2 h-full overflow-hidden hidden md:flex rounded-l-3xl">
           {/* <SearchRoom
@@ -56,17 +67,6 @@ const Chats = ({ searchParams }: SearchParamsProps) => {
           </Channel>
         </div>
       </MaxWidthWrapper>
-      <div className="md:hidden w-full">
-        <DrawerChanel>
-          <ChannelList
-            showChannelSearch
-            filters={filters}
-            sort={{ last_message_at: -1 }}
-            options={{ state: true, presence: true, limit: 10 }}
-            Preview={RoomPreview}
-          />
-        </DrawerChanel>
-      </div>
     </Chat>
   );
 };
