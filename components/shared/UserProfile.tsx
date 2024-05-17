@@ -19,7 +19,7 @@ function UserProfile() {
       <DropdownMenuTrigger className="focus:outline-none">
         <User />
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent className="w-screen md:w-full">
         <DropdownMenuLabel>
           <UserResume />
         </DropdownMenuLabel>

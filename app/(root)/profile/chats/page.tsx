@@ -12,6 +12,7 @@ import { useAuth } from "@clerk/nextjs";
 import useChatClient from "@/lib/hook/useChatClient";
 import RoomPreview from "./_components/RoomPreview";
 import DrawerChanel from "./_components/DrawerChanel";
+import Image from "next/image";
 
 const Chats = ({ searchParams }: SearchParamsProps) => {
   const { userId } = useAuth();
@@ -27,7 +28,18 @@ const Chats = ({ searchParams }: SearchParamsProps) => {
 
   const { client, isLoading } = useChatClient();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <Image
+          src="../assets/icons/spinner.svg"
+          alt="spinner"
+          width={40}
+          height={40}
+          className="object-contain stroke-slate-50 fill-slate-50"
+        />
+      </div>
+    );
 
   if (!client) return <div>no client</div>;
 

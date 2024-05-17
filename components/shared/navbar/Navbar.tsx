@@ -1,7 +1,7 @@
 import Auth from "@/components/auth/Auth";
 import Search from "@/components/search/Search";
 import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, SignOutButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { BookOpenIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import UserProfile from "../UserProfile";
@@ -12,7 +12,7 @@ const Navbar = () => {
       className="flex z-50 h-16 border-b-[1px] items-center justify-center w-full
      border-gunsmoke text-como fixed top-0 bg-white !scrollbar-none !no-scrollbar"
     >
-      <div className="flex justify-between w-full max-w-4xl items-center scrollbar-track-transparent">
+      <div className="flex justify-between px-4 md:px-0 w-full max-w-4xl items-center scrollbar-track-transparent">
         <Link href="/">
           <div className="flex items-end">
             <p className="text-como flex text-4xl">B</p>

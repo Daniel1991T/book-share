@@ -29,7 +29,6 @@ import { useEffect, useState } from "react";
 import SearchBook from "@/components/search/SearchBook";
 import { useRouter, useSearchParams } from "next/navigation";
 import { removeKeysFromQuery } from "@/lib/utils";
-import { set } from "mongoose";
 import Image from "next/image";
 
 const AddBook = () => {
@@ -172,7 +171,7 @@ const AddBook = () => {
             typeInput="text"
             label="Author"
           />
-          {/* TODO: Gender Toggle */}
+
           <FormField
             control={form.control}
             name="gender"
@@ -251,7 +250,6 @@ const AddBook = () => {
                       field.onChange(value);
                     }}
                     type="single"
-                    disabled={form.getValues("isGenerate")}
                     className="flex justify-start"
                     {...field}
                   >
