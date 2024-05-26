@@ -33,7 +33,7 @@ const FilterByCountry = ({ containerClasses, otherClasses }: FilterProps) => {
     const newUrl = formUrlQuery({
       params: searchParams.toString(),
       key: FILTER_URL_PARAMS.COUNTRY,
-      value: value.toLowerCase(),
+      value: value.toLowerCase() !== "select a country" ? value : "",
       keyToRemove: [FILTER_URL_PARAMS.PAGE],
     });
     router.push(newUrl, { scroll: false });
