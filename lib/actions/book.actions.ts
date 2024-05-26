@@ -92,7 +92,10 @@ export const getListingBooks = async ({
     connectToDB();
     const matchConditions: any = {};
     if (searchQuery) {
-      matchConditions["book_details.title"] = new RegExp(searchQuery, "i");
+      matchConditions["$or"] = [
+        { "book_details.title": new RegExp(searchQuery, "i") },
+        { "book_details.author": new RegExp(searchQuery, "i") },
+      ];
     }
     if (filter?.gender && filter?.gender !== GENDER_BOOK_FILTER.RECENT_ADDED) {
       matchConditions["book_details.gender"] = filter.gender;

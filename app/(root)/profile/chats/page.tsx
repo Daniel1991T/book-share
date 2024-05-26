@@ -34,8 +34,8 @@ const Chats = ({ searchParams }: SearchParamsProps) => {
         <Image
           src="../assets/icons/spinner.svg"
           alt="spinner"
-          width={40}
-          height={40}
+          width={100}
+          height={100}
           className="object-contain stroke-slate-50 fill-slate-50"
         />
       </div>

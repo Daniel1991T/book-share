@@ -102,4 +102,5 @@ export enum FILTER_URL_PARAMS {
   PROFILE = "profile",
   ROOM = "room-query",
   DRAWER = "drawer",
+  GLOBAL = "q",
 }
