@@ -47,6 +47,7 @@ export const GENDER_BOOK_FILTER_ITEMS: GENDER_BOOK_FILTER_ITEM[] = [
 ];
 
 export const EUROPE_COUNTRIES: string[] = [
+  "Select a country",
   "Albania",
   "Andorra",
   "Austria",
